@@ -1,4 +1,4 @@
-# SINF_Project
+# SINF_Project(FEUP)
 
 
 This projected is developed within the scope of the Sistemas de Informação course of MIEIC and aims to develop a web application for an online fruit store with no physical stores.
