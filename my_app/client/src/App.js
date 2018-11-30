@@ -1,54 +1,48 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-
+import qs from 'qs';
+ 
+ 
+ 
+ 
 class App extends Component {
   constructor(props) {
     super(props);
-
+ 
     this.state = {
       data: null,
     };
-    
-  } 
-
-
-  
-
+ 
+  }
+ 
+ 
+ 
   componentDidMount() {
-    
-    fetch('http://localhost:2018/WebApi/', {
+ 
+    fetch('http://localhost:2018/WebApi/token', {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Bearer Q4rCzFf8Aji11EdnEQEGWEPcfDH34ie7FCQl9eVxx-85uKa2IplxTBJCpomCMhAk-cw4JI5tkoCykL5mckvz_oSGtO5xz255bL_3cKdZmr7wH8e4jVH0mb_OVCta9IYtglfnCb9Npi4b_A8GbNXEL2f9kcikxCyqqQwGaaVOMxiE4vDCOEPTGsmZivdHDKGtu3KW1aRyg2CfpimAMxOsS4IWAEk_FqJHQTvTHuI3Zoc4_WoDnrkVXz-IGUxhRI7da8bv7JwzN537oru_MAj0hYhCoRf1oirtBYE01wWw9WnOVy3EiMgH0s7chFR534-V',
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: JSON.stringify({
+      body: qs.stringify({
         username: 'FEUP',
         password: 'qualquer1',
         company: 'DEMO',
-        instance: 'DEFAULT',
-        grant_type: 'qualquer1'
+        instance: 'Default',
+        grant_type: 'password',
+        Line: 'professional'
       })
-    })
-/**
-    fetch('http://localhost:2018/WebApi/token')
-      .then(response => response.json())
+    }).then(response => response.json())
       .then(data => this.setState({ data }));
-      console.log(this.state);*/
-
-    fetch('http://localhost:2018/WebApi/Base/Artigos/Existe/A0001')
-      .then(response => response.json())
-      .then(data => this.setState({ data }));
-      console.log(this.state);
-
+ 
+ 
+ 
   }
-
+ 
   render() {
-    const { hits } = this.state;
-    console.log(this.state);
-    console.log(hits);
-
+ 
     return (
       <div className="App">
         <header className="App-header">
@@ -69,5 +63,5 @@ class App extends Component {
     );
   }
 }
-
+ 
 export default App;
