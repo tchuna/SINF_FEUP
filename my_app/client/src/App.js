@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
 import qs from 'qs';
- 
+import Navigation from './components/Navigation.js'
  
  
  
@@ -15,9 +13,8 @@ class App extends Component {
     };
  
   }
- 
- 
- 
+
+ /** 
   componentDidMount() {
  
     fetch('http://localhost:2018/WebApi/token', {
@@ -37,29 +34,23 @@ class App extends Component {
     }).then(response => response.json())
       .then(data => this.setState({ data }));
  
- 
+    console.log(this.state);
  
   }
+  */
  
   render() {
  
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+              <Navigation/>
+
+        <div className="container">
+      <h2>TBD</h2>
+        
       </div>
+      </div>
+      
     );
   }
 }

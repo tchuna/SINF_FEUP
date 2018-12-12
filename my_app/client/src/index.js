@@ -3,6 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import '../node_modules/bootswatch/dist/flatly/bootstrap.min.css';
+import '../node_modules/bootswatch/dist/flatly/bootstrap.css';
+
+/**
+import '../node_modules/bootswatch/dist/flatly/variables';
+import '../node_modules/bootstrap/scss/bootstrap';*/
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
