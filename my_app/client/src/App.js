@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import qs from 'qs';
 import Navigation from './components/Navigation.js'
+import User from './components/UserProfile.js'
+import UserProfile from './components/UserProfile.js';
  
  
  
@@ -43,13 +45,14 @@ class App extends Component {
  
     return (
       <div>
-              <Navigation/>
 
         <div className="container">
       <h2>TBD</h2>
         
       </div>
       </div>
+
+    
       
     );
   }
