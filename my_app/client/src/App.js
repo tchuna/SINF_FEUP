@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import qs from 'qs';
-import Navigation from './components/Navigation.js'
  
  
  
@@ -13,8 +12,9 @@ class App extends Component {
     };
  
   }
-
+ 
  /** 
+ 
   componentDidMount() {
  
     fetch('http://localhost:2018/WebApi/token', {
@@ -36,14 +36,12 @@ class App extends Component {
  
     console.log(this.state);
  
-  }
-  */
+  }*/
  
   render() {
  
     return (
       <div>
-              <Navigation/>
 
         <div className="container">
       <h2>TBD</h2>
