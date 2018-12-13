@@ -12,13 +12,13 @@ class Navigation extends React.Component {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item">
-              <a className="nav-link" href="/">Frutas <span className="sr-only"></span></a>
+              <a className="nav-link" href="/category">Frutas <span className="sr-only"></span></a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/">Legumes</a>
+              <a className="nav-link" href="/category">Legumes</a>
             </li>
           </ul>
-          <form className="form-inline my-2 my-lg-0">
+          <form className="form-inline my-2 my-lg-0" action="/search">
             <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
             <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
           </form>
@@ -30,7 +30,7 @@ class Navigation extends React.Component {
           <a className="nav-link" href="/register"><i className="fas fa-user-plus"></i> Register</a>
         </li>
         <li className="nav-item">
-          <a className="nav-link" href="/"><i className="fas fa-shopping-cart"></i> Shopping Cart</a>
+          <a className="nav-link" href="/cart"><i className="fas fa-shopping-cart"></i> Shopping Cart</a>
         </li>
       </ul>
         </div>
