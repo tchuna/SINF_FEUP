@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Navigation from './Navigation.js';
 
-class App extends Component {
+class Homepage extends Component {
   constructor(props) {
     super(props);
  
@@ -101,4 +101,4 @@ class App extends Component {
   }
 }
  
-export default App;
+export default Homepage;

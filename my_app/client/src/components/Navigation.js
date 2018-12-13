@@ -24,10 +24,10 @@ class Navigation extends React.Component {
           </form>
           <ul className="navbar-nav">
         <li className="nav-item">
-          <a className="nav-link" href="/"><i className="fas fa-sign-in-alt"></i> Login</a>
+          <a className="nav-link" href="/login"><i className="fas fa-sign-in-alt"></i> Login</a>
         </li>
         <li className="nav-item">
-          <a className="nav-link" href="/"><i className="fas fa-user-plus"></i> Register</a>
+          <a className="nav-link" href="/register"><i className="fas fa-user-plus"></i> Register</a>
         </li>
         <li className="nav-item">
           <a className="nav-link" href="/"><i className="fas fa-shopping-cart"></i> Shopping Cart</a>
