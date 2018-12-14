@@ -21,25 +21,20 @@ class HomepageSuggestions extends Component {
     return (
       <div className="mb-3">
         <h4>Sugestões</h4>
+        <hr />
         <div className="row">
+
           <div className="col-lg-2">
-            <img className="img-fluid" src="/img/img-placeholder.png" alt="Product"></img>
+            <img className="img-fluid mb-2" src="/img/img-placeholder.png" alt="Product" />
+            <h6>Name:</h6>
+            <h6>Price:</h6>
           </div>
           <div className="col-lg-2">
-            <img className="img-fluid" src="/img/img-placeholder.png" alt="Product"></img>
+            <img className="img-fluid mb-2" src="/img/img-placeholder.png" alt="Product" />
+            <h6>Name:</h6>
+            <h6>Price:</h6>
           </div>
-          <div className="col-lg-2">
-            <img className="img-fluid" src="/img/img-placeholder.png" alt="Product"></img>
-          </div>
-          <div className="col-lg-2">
-            <img className="img-fluid" src="/img/img-placeholder.png" alt="Product"></img>
-          </div>
-          <div className="col-lg-2">
-            <img className="img-fluid" src="/img/img-placeholder.png" alt="Product"></img>
-          </div>
-          <div className="col-lg-2">
-            <img className="img-fluid" src="/img/img-placeholder.png" alt="Product"></img>
-          </div>
+
         </div>
       </div>
     );
@@ -66,24 +61,25 @@ class HomepageNew extends Component {
     return (
       <div className="mb-3">
         <h4>Novidades</h4>
+        <hr />
         <div className="row">
           <div className="col-lg-2">
-            <img className="img-fluid" src="/img/img-placeholder.png" alt="Product"></img>
+            <img className="img-fluid" src="/img/img-placeholder.png" alt="Product" />
           </div>
           <div className="col-lg-2">
-            <img className="img-fluid" src="/img/img-placeholder.png" alt="Product"></img>
+            <img className="img-fluid" src="/img/img-placeholder.png" alt="Product" />
           </div>
           <div className="col-lg-2">
-            <img className="img-fluid" src="/img/img-placeholder.png" alt="Product"></img>
+            <img className="img-fluid" src="/img/img-placeholder.png" alt="Product" />
           </div>
           <div className="col-lg-2">
-            <img className="img-fluid" src="/img/img-placeholder.png" alt="Product"></img>
+            <img className="img-fluid" src="/img/img-placeholder.png" alt="Product" />
           </div>
           <div className="col-lg-2">
-            <img className="img-fluid" src="/img/img-placeholder.png" alt="Product"></img>
+            <img className="img-fluid" src="/img/img-placeholder.png" alt="Product" />
           </div>
           <div className="col-lg-2">
-            <img className="img-fluid" src="/img/img-placeholder.png" alt="Product"></img>
+            <img className="img-fluid" src="/img/img-placeholder.png" alt="Product" />
           </div>
         </div>
       </div>
@@ -99,13 +95,13 @@ class HomepageCategory extends Component {
           <div className="col-lg-6">
             <h4>Fruta</h4>
             <a href="/category/fruta">
-              <img className="img-fluid" src="/img/fruta.jpg" alt="Fruta"></img>
+              <img className="img-fluid" src="/img/fruta.jpg" alt="Fruta" />
             </a>
           </div>
           <div className="col-lg-6">
             <h4>Legumes</h4>
             <a href="/category/legumes">
-              <img className="img-fluid" src="/img/legumes.jpg" alt="Legumes"></img>
+              <img className="img-fluid" src="/img/legumes.jpg" alt="Legumes" />
             </a>
           </div>
         </div>
