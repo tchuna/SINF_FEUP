@@ -68,32 +68,6 @@ class Homepage extends Component {
               </div>
             </div>
 
-            <div class="mb-3">
-              <h4>Novidades</h4>
-              <div class="row">
-
-                  <div class="col-lg-2">
-                      <img class="img-fluid" src="https://uetitalia.it/wp-content/uploads/2018/09/blog-placeholder.png" alt="Chania"></img>
-                    </div>
-                    <div class="col-lg-2">
-                        <img class="img-fluid" src="https://uetitalia.it/wp-content/uploads/2018/09/blog-placeholder.png" alt="Chania"></img>
-                    </div>
-                    <div class="col-lg-2">
-                        <img class="img-fluid" src="https://uetitalia.it/wp-content/uploads/2018/09/blog-placeholder.png" alt="Chania"></img>
-                    </div>
-                    <div class="col-lg-2">
-                        <img class="img-fluid" src="https://uetitalia.it/wp-content/uploads/2018/09/blog-placeholder.png" alt="Chania"></img>
-                    </div>
-                    <div class="col-lg-2">
-                        <img class="img-fluid" src="https://uetitalia.it/wp-content/uploads/2018/09/blog-placeholder.png" alt="Chania"></img>
-                    </div>
-                    <div class="col-lg-2">
-                        <img class="img-fluid" src="https://uetitalia.it/wp-content/uploads/2018/09/blog-placeholder.png" alt="Chania"></img>
-                    </div>
-
-            </div>
-          </div>
-
         </div>
 
       </div>

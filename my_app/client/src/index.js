@@ -6,7 +6,8 @@ import Product from './components/Product.js';
 import UserProfile from './components/UserProfile.js';
 import Login from './components/Login.js';
 import Register from './components/Register.js';
-import Category from './components/Category.js';
+import CategoryFruta from './components/Category.js';
+import CategoryLegumes from './components/Category.js';
 import Search from './components/Search.js';
 import ShoppingCart from './components/ShoppingCart.js';
 
@@ -27,7 +28,8 @@ ReactDOM.render(
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/search" component={Search} />
-            <Route exact path="/category" component={Category} />
+            <Route exact path="/category/frutas" component={CategoryFruta} />
+            <Route exact path="/category/legumes" component={CategoryLegumes} />
             <Route exact path="/cart" component={ShoppingCart} />
 
 
