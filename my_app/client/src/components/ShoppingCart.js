@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import qs from 'qs';
 import Navigation from './Navigation.js'
 
 
@@ -54,10 +53,10 @@ class Cart extends Component {
       					</tbody>
                             <tfoot>
                                 <tr>
-                                    <td><a  className="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
+                                    <td><button  className="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</button></td>
                                     <td colspan="2" class="hidden-xs"></td>
                                     <td className="hidden-xs text-center"><strong>Total 1.99€</strong></td>
-                                    <td><a  className="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
+                                    <td><button  className="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></button></td>
                                 </tr>
                             </tfoot>
       				

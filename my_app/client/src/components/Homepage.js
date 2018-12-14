@@ -100,22 +100,6 @@ class HomepageNew extends Component {
 }
 
 class HomepageCategory extends Component {
-  constructor(props) {
-    super(props);
- 
-    this.state = {
-      data: null,
-    };
- 
-  }
- 
-  componentDidMount () {
-    this.getData();
-  }
-
-  getData () {
-      // Fetch Products
-  }
  
   render () {
     return (
@@ -139,23 +123,7 @@ class HomepageCategory extends Component {
 }
 
 class Homepage extends Component {
-  constructor(props) {
-    super(props);
- 
-    this.state = {
-      data: null,
-    };
- 
-  }
- 
-  componentDidMount () {
-    this.getData();
-  }
 
-  getData () {
-      // Fetch User Related things
-  }
- 
   render() {
     return (
       <div>

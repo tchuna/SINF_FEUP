@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import qs from 'qs';
 import Navigation from './Navigation.js';
 
 
@@ -73,7 +72,7 @@ class UserProfile extends Component {
                             <div className="col-lg-8 offset-2" >
                                 <ul className="list-group">
                                     <li className="list-group-item d-flex justify-content-between align-items-center">
-                                        <a>Order A</a>
+                                    <a href="/">Order A </a>
                                         <span className="badge badge-success badge-pill">Complete</span>
                                     </li>
                                     <li className="list-group-item d-flex justify-content-between align-items-center">

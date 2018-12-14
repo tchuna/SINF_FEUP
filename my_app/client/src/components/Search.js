@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import qs from 'qs';
 import Navigation from './Navigation.js'
 
  
