@@ -1,26 +1,19 @@
 import React, { Component } from 'react';
 import Navigation from './Navigation.js'
 
-
-
 class Product extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       data: null,
     };
-
   }
 
-
   render() {
-
     return (
       <div>
         <Navigation />
-
-        <div className="container" >
+        <div className="container mt-5" >
           <div className="row">
             <div className="col-lg-4">
               <img className="img-fluid" src="https://uetitalia.it/wp-content/uploads/2018/09/blog-placeholder.png" alt="img"></img>
@@ -34,7 +27,6 @@ class Product extends Component {
                   Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opp
                   osed to using 'Content here, content here', making it look like readable English. Many des
                 </p>
-
               </div>
               <div class="product price">
                 <h4>Preço:</h4>
@@ -42,6 +34,7 @@ class Product extends Component {
               </div>
               <div class="form-container">
                 <form className="form-horizontal" action="">
+
                   <div className="form-group">
                     <div className="row">
                       <label className="control-label col-lg-3" for="email">Quantidade em kg:</label>
@@ -56,17 +49,10 @@ class Product extends Component {
                   </div>
 
                 </form>
-
               </div>
             </div>
-
           </div>
-
         </div>
-
-
-
-
       </div>
     );
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Navigation extends React.Component {
+export class Navigation extends React.Component {
   render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -12,10 +12,10 @@ class Navigation extends React.Component {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item">
-              <a className="nav-link" href="/category">Frutas <span className="sr-only"></span></a>
+              <a className="nav-link" href="/category/fruta">Fruta<span className="sr-only"></span></a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/category">Legumes</a>
+              <a className="nav-link" href="/category/legumes">Legumes</a>
             </li>
           </ul>
           <form className="form-inline my-2 my-lg-0" action="/search">
@@ -23,19 +23,31 @@ class Navigation extends React.Component {
             <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
           </form>
           <ul className="navbar-nav">
-        <li className="nav-item">
-          <a className="nav-link" href="/login"><i className="fas fa-sign-in-alt"></i> Login</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="/register"><i className="fas fa-user-plus"></i> Register</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="/cart"><i className="fas fa-shopping-cart"></i> Shopping Cart</a>
-        </li>
-      </ul>
+            <li className="nav-item">
+              <a className="nav-link" href="/login"><i className="fas fa-sign-in-alt"></i> Login</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/register"><i className="fas fa-user-plus"></i> Register</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/cart"><i className="fas fa-shopping-cart"></i> Shopping Cart</a>
+            </li>
+          </ul>
         </div>
       </nav>
     )
+  }
+}
+
+export class Footer extends React.Component {
+  render() {
+    return (
+      <div className="container mt-5">
+        <footer className="footer">
+          <span className="text-muted">FEUP SINF 2018</span>
+        </footer>
+      </div>
+    );
   }
 }
 

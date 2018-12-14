@@ -28,11 +28,9 @@ ReactDOM.render(
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/search" component={Search} />
-            <Route exact path="/category/frutas" component={CategoryFruta} />
+            <Route exact path="/category/fruta" component={CategoryFruta} />
             <Route exact path="/category/legumes" component={CategoryLegumes} />
             <Route exact path="/cart" component={ShoppingCart} />
-
-
         </div>
     </Router>,
 
