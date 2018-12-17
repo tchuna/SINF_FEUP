@@ -21,7 +21,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.css';
 ReactDOM.render(
     <Router>
         <div>
-            <Route exact path="/" component={Homepage} />
+            <Route exact path="/" component={Login} />
             <Route exact path="/homepage" component={Homepage} />
             <Route exact path="/product" component={Product} />
             <Route exact path="/profile" component={UserProfile} />
