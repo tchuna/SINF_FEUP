@@ -24,7 +24,7 @@ ReactDOM.render(
         <div>
             <Route exact path="/" component={Login} />
             <Route exact path="/homepage" component={Homepage} />
-            <Route exact path="/product" component={Product} />
+            <Route exact path="/products/:id" component={Product} />
             <Route exact path="/profile" component={UserProfile} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
