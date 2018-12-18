@@ -25,13 +25,13 @@ ReactDOM.render(
             <Route exact path="/" component={Login} />
             <Route exact path="/homepage" component={Homepage} />
             <Route exact path="/products/:id" component={Product} />
-            <Route exact path="/profile" component={UserProfile} />
+            <Route exact path="/profile/:id" component={UserProfile} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/search" component={Search} />
             <Route exact path="/category/fruta" component={CategoryFruta} />
             <Route exact path="/category/legumes" component={CategoryLegumes} />
-            <Route exact path="/cart" component={ShoppingCart} />
+            <Route exact path="/cart/:id" component={ShoppingCart} />
         </div>
     </Router>,
 

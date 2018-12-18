@@ -7,14 +7,14 @@ class Product extends Component {
     super(props);
     this.state = {
       data: null,
-      productID: null,
+      productID: props.match.params.id,
       product: null,
       productPrice: null,
-      
-
+      productDescription: null,
     };
   }
   componentDidMount() {
+    
     this.getToken();
   }
 
@@ -34,20 +34,47 @@ class Product extends Component {
         Line: 'professional'
       })
     }).then(response => response.json())
-      .then(function (data) {
+      .then(function(data){
         obj = JSON.parse(JSON.stringify(data));
       })
       .then(() => {
         //this.validateUser(obj.access_token);
-        this.getProduct(obj.access_token);
+        this.productExists(obj.access_token);
+
       });
-    console.log(this.state);
-    console.log(obj);
+  }
+
+  productExists(token){
+    var baseExists ='http://localhost:2018/WebApi/Base/Artigos/Existe/'
+    var existsURL = baseExists+this.state.productID;
+    console.log(existsURL);
+    var obj;
+    fetch(existsURL, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + token
+      },
+    }).then(response => response.json())
+    .then(function(data){
+      obj = JSON.parse(JSON.stringify(data));
+      console.log(obj);
+    }) 
+    .then(() => {
+      if(obj===true){
+        this.getProduct(token);
+      }
+      else{
+        console.log("artigo nao existe");
+      }    
+    });
+
   }
 
   getProduct(token) {
+
     var baseURL = 'http://localhost:2018/WebApi/Base/Artigos/Edita/';
     var newURL = baseURL + this.state.productID;
+    var obj;
     console.log(newURL);
     fetch(newURL, {
       method: 'GET',
@@ -57,23 +84,30 @@ class Product extends Component {
         'Authorization': 'Bearer ' + token
       },
     }).then(response => response.json())
+    .then(function(data){
+      obj = JSON.parse(JSON.stringify(data));
+      console.log('obj:'+obj.Descricao);
+    })
       .then(product => this.setState({ product }));
 
     var base='http://localhost:2018/WebApi/Base/ArtigosPrecos/Edita/';
-    var priceURL = base+this.productID+'/EUR/UN';
-
+    var priceURL = base+this.state.productID+'/EUR/UN';
+    var price;
+    console.log(priceURL);
     fetch(priceURL, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'cache-control': 'no-cache',
         'Authorization': 'Bearer ' + token
       },
     }).then(response => response.json())
-      .then(productPrice => this.setState({ productPrice }));
-
-
-
+    .then(function(data){
+      price = JSON.parse(JSON.stringify(data));
+      price = price.PVP1;
+      console.log("pvp1:"+price);
+    })
+    .then( () => {
+        this.setState({ productPrice: price })
+      })
   }
 
 
@@ -84,11 +118,11 @@ class Product extends Component {
         <div className="container mt-5" >
           <div className="row">
             <div className="col-lg-4">
-              <img className="img-fluid" src="https://uetitalia.it/wp-content/uploads/2018/09/blog-placeholder.png" alt="img"></img>
+              <img className="img-fluid" src={'img/' + this.state.productID + '.png'} alt="img"></img>
             </div>
             <div className="col-lg-8">
               <div className="container">
-                <h3>Product Name</h3>
+                <h3>{this.state.productID}</h3>
                 <p className="product-description">
                   Description: It is a long established fact that a reader will be distracted by the
                   readable content of a page when looking at its layout. The point of using
@@ -98,7 +132,7 @@ class Product extends Component {
               </div>
               <div className="product price">
                 <h4>Preço:</h4>
-                <h4>2 € <small className="text-muted">/kg</small></h4>
+                <h4>{this.state.productPrice} € <small className="text-muted">/kg</small></h4>
               </div>
               <div className="form-container">
                 <form className="form-horizontal">
