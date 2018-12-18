@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Navigation from './Navigation.js'
+import Navigation from './Navigation.js';
+import {Redirect} from 'react-router-dom';
 import qs from 'qs';
 
 class Product extends Component {
@@ -10,12 +11,20 @@ class Product extends Component {
       productID: null,
       product: null,
       productPrice: null,
-      
-
+      redirect: false
     };
   }
   componentDidMount() {
     this.getToken();
+  }
+
+  componentWillMount() {
+    if(sessionStorage.getItem('token')){
+      console.log("ja existe token");
+    }
+    else{
+      this.setState({redirect: true});
+    }
   }
 
   getToken() {
@@ -78,6 +87,9 @@ class Product extends Component {
 
 
   render() {
+    if(this.state.redirect){
+      return (<Redirect to={'/login'}/>)
+    }
     return (
       <div>
         <Navigation />
