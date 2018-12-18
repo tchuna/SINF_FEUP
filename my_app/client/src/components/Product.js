@@ -12,6 +12,7 @@ class Product extends Component {
       product: null,
       productPrice: null,
       productDescription: null,
+      productName: null,
       redirect: false
     };
   }
@@ -87,6 +88,7 @@ class Product extends Component {
     var baseURL = 'http://localhost:2018/WebApi/Base/Artigos/Edita/';
     var newURL = baseURL + this.state.productID;
     var obj;
+    var desc;
     console.log(newURL);
     fetch(newURL, {
       method: 'GET',
@@ -98,13 +100,17 @@ class Product extends Component {
     }).then(response => response.json())
     .then(function(data){
       obj = JSON.parse(JSON.stringify(data));
-      console.log('obj:'+obj.Descricao);
+      //console.log('prod:'+obj);
+      desc=obj.Observacoes;
+      console.log("description:"+desc);
       obj=obj.Descricao;
+
     })
       .then(product => this.setState({ product }))
       .then(() => {
         this.getProductPrice(token);
-        this.setState({ productDescription: obj })
+        this.setState({ productName: obj })
+        this.setState({ productDescription: desc })
       });
 
   
@@ -151,12 +157,9 @@ class Product extends Component {
             </div>
             <div className="col-lg-8">
               <div className="container">
-                <h3>{this.state.productDescription}</h3>
+                <h3>{this.state.productName}</h3>
                 <p className="product-description">
-                  Description: It is a long established fact that a reader will be distracted by the
-                  readable content of a page when looking at its layout. The point of using
-                  Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opp
-                  osed to using 'Content here, content here', making it look like readable English. Many des
+                {this.state.productDescription}
                 </p>
               </div>
               <div className="product price">
