@@ -91,43 +91,54 @@ class Login extends Component {
         'Authorization': 'Bearer '+token
       },
     }).then(response => response.json())
-     .then( exists => this.setState({exists}));
+     .then( exists => this.setState({exists}))
+     .then(() => {
+      console.log("EXISTE?="+this.state.exists)
+      console.log(this.state);
+        if(this.state.exists===true){
+          console.log("user existe");
+          this.validatePassword(token);
+        }
+        else if( this.state.exists===false){
+          console.log('user:'+ this.state.username+ " nao existe");
+          this.setState({ error: 'User nao existe' })
+        }
+    });
      
- 
-    console.log("EXISTE?="+this.state.exists)
-    console.log(this.state);
-      if(this.state.exists===true){
-        console.log("user existe");
-        this.validatePassword(token);
-      }
-      else if( this.state.exists===false){
-        console.log('user:'+ this.state.username+ " nao existe");
-        this.setState({ error: 'User nao existe' })
-      }
+     
+    
+   
   }
 
 
   validatePassword(token){
     //Base/Clientes/DaValorAtributo/C001/CDU_CampoVar2
-    var baseURL= 'Base/Clientes/DaValorAtributo/';
+    var baseURL= 'http://localhost:2018/WebApi/Base/Clientes/DaValorAtributo/';
     var newURL= baseURL+this.state.username+'/CDU_CampoVar2';
-    console.log(newURL);
-   
+    
+    console.log("URL:"+newURL);
+   var obj;
     fetch(newURL,{
       method: 'GET',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'cache-control': 'no-cache',
-        'Authorization': 'Bearer '+token
+        'Authorization': 'Bearer '+token,
+        'Content-Type': 'application/json',
+
       },
     }).then(response => response.json())
-      .then(fetchPassword => this.setState({ fetchPassword }));
-
-      if(this.state.fetchPassword===this.state.password){
+    .then(function(data){
+      obj = JSON.parse(JSON.stringify(data));
+    })
+    .then(() => {
+      console.log("obj:"+obj);
+      if(obj===this.state.password){
         console.log("login successful");
         //store.set('loggedIn', true);
         //history.push('/users');
       }
+    });
+
+     
 
   }
 
