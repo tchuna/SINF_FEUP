@@ -1,15 +1,29 @@
 import React, { Component } from 'react';
 import Navigation from './Navigation.js'
+import {Redirect} from 'react-router-dom';
 
 class Cart extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: null,
+      redirect: false
     };
   }
 
+  componentWillMount() {
+    if(sessionStorage.getItem('token')){
+      console.log("ja existe token");
+    }
+    else{
+      this.setState({redirect: true});
+    }
+  }
+
   render() {
+    if(this.state.redirect){
+      return (<Redirect to={'/login'}/>)
+    }
     return (
       <div>
         <Navigation />

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Navigation from './Navigation.js'
+import Navigation from './Navigation.js';
+import {Redirect} from 'react-router-dom';
 
 import qs from 'qs';
 
@@ -12,7 +13,8 @@ class Login extends Component {
       password: "",
       error: '',
       fetchPassword: '',
-      exists: false,
+      redirect: false,
+      exists: false
 
     };
     this.handlePassChange = this.handlePassChange.bind(this);
@@ -21,7 +23,7 @@ class Login extends Component {
     this.dismissError = this.dismissError.bind(this);
   }
 
-  
+
   getToken() {
     var obj;
     fetch('http://localhost:2018/WebApi/token', {
@@ -32,7 +34,7 @@ class Login extends Component {
       body: qs.stringify({
         username: 'FEUP',
         password: 'qualquer1',
-        company: 'FRUITSHOP',
+        company: 'FRUITS',
         instance: 'Default',
         grant_type: 'password',
         Line: 'professional'
@@ -47,7 +49,7 @@ class Login extends Component {
       console.log(this.state);
       console.log(obj);
   }
-  
+
   dismissError() {
     this.setState({ error: '' });
   }
@@ -104,10 +106,6 @@ class Login extends Component {
           this.setState({ error: 'User nao existe' })
         }
     });
-     
-     
-    
-   
   }
 
 
@@ -115,7 +113,7 @@ class Login extends Component {
     //Base/Clientes/DaValorAtributo/C001/CDU_CampoVar2
     var baseURL= 'http://localhost:2018/WebApi/Base/Clientes/DaValorAtributo/';
     var newURL= baseURL+this.state.username+'/CDU_CampoVar2';
-    
+
     console.log("URL:"+newURL);
    var obj;
     fetch(newURL,{
@@ -132,17 +130,27 @@ class Login extends Component {
     .then(() => {
       console.log("obj:"+obj);
       if(obj===this.state.password){
-        console.log("login successful");
+        sessionStorage.setItem('token', token);
+        sessionStorage.setItem('userID', this.state.username);
+        this.setState({redirect: true});
         //store.set('loggedIn', true);
         //history.push('/users');
       }
     });
 
-     
+
 
   }
 
   render() {
+    if(this.state.redirect){
+      return (<Redirect to={'/homepage'}/>)
+    }
+
+    if(sessionStorage.getItem('token')){
+      return (<Redirect to={'/homepage'}/>)
+    }
+
     return (
       <div>
         <Navigation />
@@ -162,8 +170,8 @@ class Login extends Component {
                         </button>
                         <strong> {this.state.error}</strong>
                       </div>
-                      
-                     
+
+
                     }
                     <div className="form-label-group mb-3">
                       <label>Username: </label>

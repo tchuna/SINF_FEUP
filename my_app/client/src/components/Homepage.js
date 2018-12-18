@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Navigation, Footer } from './Navigation.js';
 import qs from 'qs';
- 
+import {Redirect} from 'react-router-dom';
+
 class HomepageSuggestions extends Component {
   constructor(props) {
     super(props);
@@ -39,6 +40,18 @@ class HomepageSuggestions extends Component {
         this.getProducts(obj.access_token);
       });*/
   }
+
+  getProducts(token){
+    fetch('http://localhost:2018/WebApi/Base/Artigos/Edita/APV', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'cache-control': 'no-cache',
+        'Authorization': 'Bearer '+token
+      },
+    }).then(response => response.json())
+      .then(data => this.setState({ data }));
+  }
  
   getProducts(token){
     fetch('http://localhost:2018/WebApi/Base/Artigos/Edita/APV', {
@@ -64,7 +77,7 @@ class HomepageSuggestions extends Component {
     return (
       <div className="mb-3">
         <h4>Sugestões</h4>
-        <hr />
+        <hr/>
         <div className="row">
  
           <div className="col-lg-2">
@@ -120,7 +133,6 @@ class HomepageNew extends Component {
         this.getProductsNew(obj.access_token);
       });
 }
- 
 getProductsNew(token){
   fetch('http://localhost:2018/WebApi/Base/Artigos/LstArtigos', {
     method: 'GET',
@@ -132,9 +144,9 @@ getProductsNew(token){
   }).then(response => response.json())
     .then(data => this.setState({ data }));
 }
- 
+
   render() {
- 
+
     //Selecting 6 of the most recents elements
     var newProductsName = [];
     if(this.state.data){
@@ -146,7 +158,6 @@ getProductsNew(token){
         newProductsName[i] = newProducts[i].Artigo;
       }
     }
- 
     return (
       <div className="mb-3">
         <h4>Novidades</h4>
@@ -200,7 +211,28 @@ class HomepageCategory extends Component {
 }
  
 class Homepage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      redirect: false,
+    };
+  }
+
+  componentWillMount() {
+    if(sessionStorage.getItem('token')){
+      console.log("ja existe token");
+    }
+    else{
+      this.setState({redirect: true});
+    }
+  }
+
   render() {
+
+    if(this.state.redirect){
+      return (<Redirect to={'/login'}/>)
+    }
+
     return (
       <div>
         <Navigation />
@@ -214,5 +246,5 @@ class Homepage extends Component {
     );
   }
 }
- 
+
 export default Homepage;
