@@ -19,6 +19,7 @@ class Product extends Component {
     
     this.getToken();
   }
+ 
 
   componentWillMount() {
     if(sessionStorage.getItem('token')){
@@ -98,9 +99,19 @@ class Product extends Component {
     .then(function(data){
       obj = JSON.parse(JSON.stringify(data));
       console.log('obj:'+obj.Descricao);
+      obj=obj.Descricao;
     })
-      .then(product => this.setState({ product }));
+      .then(product => this.setState({ product }))
+      .then(() => {
+        this.getProductPrice(token);
+        this.setState({ productDescription: obj })
+      });
 
+  
+      //Base/Artigos/DaValorAtributo/MCA/Descricao
+  }
+
+  getProductPrice(token){
     var base='http://localhost:2018/WebApi/Base/ArtigosPrecos/Edita/';
     var priceURL = base+this.state.productID+'/EUR/UN';
     var price;
@@ -108,7 +119,8 @@ class Product extends Component {
     fetch(priceURL, {
       method: 'GET',
       headers: {
-        'Authorization': 'Bearer ' + token
+        'Authorization': 'Bearer ' + token,
+
       },
     }).then(response => response.json())
     .then(function(data){
@@ -118,11 +130,14 @@ class Product extends Component {
     })
     .then( () => {
         this.setState({ productPrice: price })
-      })
+      });
   }
 
 
   render() {
+
+
+
     if(this.state.redirect){
       return (<Redirect to={'/login'}/>)
     }
@@ -132,11 +147,11 @@ class Product extends Component {
         <div className="container mt-5" >
           <div className="row">
             <div className="col-lg-4">
-              <img className="img-fluid" src={'img/' + this.state.productID + '.png'} alt="img"></img>
+              <img className="img-fluid" src={'../img/' + this.state.productID + '.png'} alt="img"></img>
             </div>
             <div className="col-lg-8">
               <div className="container">
-                <h3>{this.state.productID}</h3>
+                <h3>{this.state.productDescription}</h3>
                 <p className="product-description">
                   Description: It is a long established fact that a reader will be distracted by the
                   readable content of a page when looking at its layout. The point of using

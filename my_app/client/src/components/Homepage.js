@@ -40,7 +40,7 @@ class HomepageSuggestions extends Component {
         this.getProducts(obj.access_token);
       });*/
   }
-
+/** 
   getProducts(token){
     fetch('http://localhost:2018/WebApi/Base/Artigos/Edita/APV', {
       method: 'GET',
@@ -52,7 +52,7 @@ class HomepageSuggestions extends Component {
     }).then(response => response.json())
       .then(data => this.setState({ data }));
   }
- 
+ */
   getProducts(token){
     fetch('http://localhost:2018/WebApi/Base/Artigos/Edita/APV', {
       method: 'GET',

@@ -34,7 +34,7 @@ class Login extends Component {
       body: qs.stringify({
         username: 'FEUP',
         password: 'qualquer1',
-        company: 'FRUITS',
+        company: 'FRUITSHOP',
         instance: 'Default',
         grant_type: 'password',
         Line: 'professional'
