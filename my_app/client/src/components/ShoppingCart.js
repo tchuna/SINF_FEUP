@@ -6,9 +6,16 @@ class Cart extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      cart: null,
       data: null,
       redirect: false
     };
+      this.removeRow = this.removeRow.bind(this);
+  }
+
+  componentDidMount() {
+    var array = JSON.parse(sessionStorage.getItem('cart'));
+    this.setState({ cart: array});
   }
 
   componentWillMount() {
@@ -20,25 +27,33 @@ class Cart extends Component {
     }
   }
 
+  removeRow = (event,product) => {
+    var array = JSON.parse(sessionStorage.getItem('cart'));
+    var index = array.indexOf(product);
+    array.splice(index, 1);
+    sessionStorage.setItem('cart', JSON.stringify(array));
+    this.setState({ cart: array});
+  }
+
   render() {
     if(this.state.redirect){
       return (<Redirect to={'/login'}/>)
     }
     var list;
     var totalPrice = 0;
-    if(sessionStorage.getItem('cart')){
-       list = (JSON.parse(sessionStorage.getItem('cart'))).map( product =>{
+    if(this.state.cart != null){
+       list = this.state.cart.map( product =>{
         let subTotal = Math.round(product.price * product.quantity * 100) / 100 ;
         totalPrice += subTotal;
         return (
           <tr>
             <td data-th="Product"> <img src={"img/" + product.id + ".png"} alt="..."  width="80" height="80" className="img-responsive" /></td>
-            <td> <p>{product.description}</p> </td>
-            <td data-th="Price" className="text-center">{product.price} €</td>
+            <td> <p>{product.name}</p> </td>
+            <td data-th="Price"  className="text-center">{product.price} €</td>
             <td data-th="Quantity" className="text-center">{product.quantity} Kg</td>
             <td data-th="Subtotal" className="text-center">{subTotal} €</td>
             <td className="actions" data-th="">
-              <button className="btn btn-danger btn-sm"><i className="fa fa-times-circle"></i></button>
+              <button className="btn btn-danger btn-sm" onClick={(event) => this.removeRow(event, product)}><i className="fa fa-times-circle"></i></button>
             </td>
           </tr>
         )
