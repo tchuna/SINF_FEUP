@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 import Navigation from './Navigation.js';
 import {Redirect} from 'react-router-dom';
+import qs from 'qs';
 
 class UserProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: null,
+      userID: props.match.params.id,
       redirect: false,
+      name: null,
+      nif: null,
+      address: null,
+      phone: null,
+
     };
   }
 
@@ -19,7 +26,95 @@ class UserProfile extends Component {
       this.setState({redirect: true});
     }
   }
+  componentDidMount() {
+    this.getToken();
+  }
 
+  getToken() {
+    var obj;
+    fetch('http://localhost:2018/WebApi/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: qs.stringify({
+        username: 'FEUP',
+        password: 'qualquer1',
+        company: 'FRUITSHOP',
+        instance: 'Default',
+        grant_type: 'password',
+        Line: 'professional'
+      })
+    }).then(response => response.json())
+      .then(function(data){
+        obj = JSON.parse(JSON.stringify(data));
+      })
+      .then(() => {
+        this.userExists(obj.access_token);
+
+      });
+  }
+
+  userExists(token){
+
+    var baseExists ='http://localhost:2018/WebApi/Base/Clientes/Existe/'
+    var existsURL = baseExists+this.state.userID;
+    console.log(existsURL);
+    var obj;
+    fetch(existsURL, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + token
+      },
+    }).then(response => response.json())
+    .then(function(data){
+      obj = JSON.parse(JSON.stringify(data));
+      console.log(obj);
+    })
+    .then(() => {
+      if(obj===true){
+        this.getClient(token);
+        console.log("cliente existe");
+      }
+      else{
+        console.log("artigo nao existe");
+      }
+    });
+  }
+  getClient(token) {
+
+    var nome;
+    var nif;
+    var morada;
+    var telefone;
+
+    var baseURL = 'http://localhost:2018/WebApi/Base/Clientes/Edita/';
+    var newURL = baseURL + this.state.userID;
+    console.log(newURL);
+    fetch(newURL, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'cache-control': 'no-cache',
+        'Authorization': 'Bearer ' + token
+      },
+    }).then(response => response.json())
+    .then(function(data){
+      console.log(data);
+      nome = data.Nome;
+      morada = data.Morada + ',' +data.Localidade;
+      telefone= data.Telefone;
+      nif = data.NumContribuinte;
+      console.log(telefone);
+    })
+    .then(() => {
+      this.setState({ name: nome })
+      this.setState({ phone: telefone })
+      this.setState({ address: morada })
+      this.setState({ nif: nif })
+    });
+      
+  }
   render() {
     if(this.state.redirect){
       return (<Redirect to={'/login'}/>)
@@ -30,7 +125,7 @@ class UserProfile extends Component {
           <div className="container main-container mt-5">
             <div className="row">
               <div className="col-lg-12">
-                <h3>User profile</h3>
+                <h3>{this.state.userID}</h3>
               </div>
               <div className="col-lg-3 text-center">
                 <img className="img-fluid" src="https://uetitalia.it/wp-content/uploads/2018/09/blog-placeholder.png" alt="Chania"></img>
@@ -40,10 +135,17 @@ class UserProfile extends Component {
 
               <div className="col-lg-9">
                 <p className="user-bio">
-                  Description: It is a long established fact that a reader will be distracted by the
-                  readable content of a page when looking at its layout. The point of using
-                  Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opp
-                  osed to using 'Content here, content here', making it look like readable English. Many des
+                <strong>Nome: </strong> {this.state.name}
+                </p>
+                <p className="user-bio">
+                <strong>NIF: </strong>{this.state.nif}
+               
+                </p>
+                <p className="user-bio">
+                <strong>Telefone: </strong> {this.state.phone}
+                </p>
+                <p className="user-bio">
+                <strong>Morada:</strong> {this.state.address}
                 </p>
               </div>
             </div>
