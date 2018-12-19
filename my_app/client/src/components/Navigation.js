@@ -32,6 +32,9 @@ export class Navigation extends React.Component {
 
   render() {
 
+    let profile = sessionStorage.getItem('userID');
+    profile = '/profile/'+profile;
+
     if(this.state.doLogOut){
       return (<Redirect to={'/login'}/>)
     }
@@ -69,13 +72,13 @@ export class Navigation extends React.Component {
           </form>
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link" href="/profile"><i className="fas fa-sign-in-alt"></i> Profile</a>
-            </li>
-            <li className="nav-item">
-              <button className="btn my-2 my-sm-0" onClick={this.logout}>Logout</button>
+              <a className="nav-link" href={profile}><i className="fas fa-sign-in-alt"></i> My Profile</a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="/cart"><i className="fas fa-shopping-cart"></i> Shopping Cart</a>
+            </li>
+            <li className="nav-item">
+              <button className="btn my-2 my-sm-0" onClick={this.logout}>Logout</button>
             </li>
           </ul>
         </div>
