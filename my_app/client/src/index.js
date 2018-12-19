@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import Homepage from './components/Homepage.js';
 import Product from './components/Product.js';
 import UserProfile from './components/UserProfile.js';
@@ -16,6 +15,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
+import './index.css';
 
 ReactDOM.render(
     <Router>
