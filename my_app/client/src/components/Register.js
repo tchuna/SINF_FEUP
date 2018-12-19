@@ -5,7 +5,20 @@ class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: null,
+      cliente: "NUNOA",
+      nome: "Soluciones Cad de qwerty",
+      descricao: "qwerty1234",
+      morada: "PASSEO DE PORTUGAL, 12345",
+      localidade: "VILANUEVA DE ARRIBA",
+      codigoPostal: "61001",
+      localidadeCodigoPostal: "MADRID",
+      telefone: "00.034.1.474747447",
+      fax: "00.034.1.4374747474",
+      enderecoWeb: "http://alcad.es",
+      distrito: "",
+      numContribuinte: "989922456",
+      pais: "ES",
+      moeda: "EUR"
     };
   }
 
