@@ -25,6 +25,7 @@ export class Navigation extends React.Component {
   logout(){
     sessionStorage.setItem('token','');
     sessionStorage.setItem('userID','');
+    sessionStorage.setItem('cart','');
     sessionStorage.clear();
     this.setState({doLogOut: true});
   }
@@ -56,10 +57,10 @@ export class Navigation extends React.Component {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item">
-              <a className="nav-link" href="/category/fruta">Fruta<span className="sr-only"></span></a>
+              <a className="nav-link" href="/category/FRT">Fruta<span className="sr-only"></span></a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/category/legumes">Legumes</a>
+              <a className="nav-link" href="/category/LGM">Legumes</a>
             </li>
           </ul>
           <form className="form-inline my-2 my-lg-0" action="/search">

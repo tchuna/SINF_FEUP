@@ -10,11 +10,11 @@ class HomepageSuggestions extends Component {
       data: null,
     };
   }
- 
+
   componentDidMount() {
     this.getData();
   }
- 
+
   getData() {
     // Fetch Products
     /*
@@ -40,7 +40,7 @@ class HomepageSuggestions extends Component {
         this.getProducts(obj.access_token);
       });*/
   }
-/** 
+/**
   getProducts(token){
     fetch('http://localhost:2018/WebApi/Base/Artigos/Edita/APV', {
       method: 'GET',
@@ -64,7 +64,7 @@ class HomepageSuggestions extends Component {
     }).then(response => response.json())
       .then(data => this.setState({ data }));
   }
- 
+
   render() {
     //console.log(this.state);
     var obj;
@@ -79,7 +79,7 @@ class HomepageSuggestions extends Component {
         <h4>Sugestões</h4>
         <hr/>
         <div className="row">
- 
+
           <div className="col-lg-2">
             <img className="img-fluid mb-2" src="/img/img-placeholder.png" alt="Product" />
             <h6>Name: {a}</h6>
@@ -90,13 +90,13 @@ class HomepageSuggestions extends Component {
             <h6>Name:</h6>
             <h6>Price:</h6>
           </div>
- 
+
         </div>
       </div>
     );
   }
 }
- 
+
 class HomepageNew extends Component {
   constructor(props) {
     super(props);
@@ -104,11 +104,11 @@ class HomepageNew extends Component {
       data: null,
     };
   }
- 
+
   componentDidMount() {
     this.getData();
   }
- 
+
   getData() {
     // Fetch Products
     var obj;
@@ -164,29 +164,41 @@ getProductsNew(token){
         <hr />
         <div className="row">
           <div className="col-lg-2">
-            <img className="img-fluid" src={"img/" + newProductsName[5] + ".png"} alt="Product" />
+            <a href={"products/" + newProductsName[5]}>
+              <img className="img-fluid" src={"img/" + newProductsName[5] + ".png"} alt="Product" />
+            </a>
           </div>
           <div className="col-lg-2">
-            <img className="img-fluid" src={"img/" + newProductsName[4] + ".png"} alt="Product" />
+            <a href={"products/" + newProductsName[4]}>
+              <img className="img-fluid" src={"img/" + newProductsName[4] + ".png"} alt="Product" />
+            </a>
           </div>
           <div className="col-lg-2">
-            <img className="img-fluid" src={"img/" + newProductsName[3] + ".png"} alt="Product" />
+            <a href={"products/" + newProductsName[3]}>
+              <img className="img-fluid" src={"img/" + newProductsName[3] + ".png"} alt="Product" />
+            </a>
           </div>
           <div className="col-lg-2">
-            <img className="img-fluid" src={"img/" + newProductsName[2] + ".png"} alt="Product" />
+            <a href={"products/" + newProductsName[2]}>
+              <img className="img-fluid" src={"img/" + newProductsName[2] + ".png"} alt="Product" />
+            </a>
           </div>
           <div className="col-lg-2">
-            <img className="img-fluid" src={"img/" + newProductsName[1] + ".png"} alt="Product" />
+            <a href={"products/" + newProductsName[1]}>
+              <img className="img-fluid" src={"img/" + newProductsName[1] + ".png"} alt="Product" />
+            </a>
           </div>
           <div className="col-lg-2">
-            <img className="img-fluid" src={"img/" + newProductsName[0] + ".png"} alt="Product" />
+            <a href={"products/" + newProductsName[0]}>
+              <img className="img-fluid" src={"img/" + newProductsName[0] + ".png"} alt="Product" />
+            </a>
           </div>
         </div>
       </div>
     );
   }
 }
- 
+
 class HomepageCategory extends Component {
   render() {
     return (
@@ -194,13 +206,13 @@ class HomepageCategory extends Component {
         <div className="row">
           <div className="col-lg-6">
             <h4>Fruta</h4>
-            <a href="/category/fruta">
+            <a href="/category/FRT">
               <img className="img-fluid" src="/img/fruta.jpg" alt="Fruta" />
             </a>
           </div>
           <div className="col-lg-6">
             <h4>Legumes</h4>
-            <a href="/category/legumes">
+            <a href="/category/LGM">
               <img className="img-fluid" src="/img/legumes.jpg" alt="Legumes" />
             </a>
           </div>
@@ -209,7 +221,7 @@ class HomepageCategory extends Component {
     )
   }
 }
- 
+
 class Homepage extends Component {
   constructor(props) {
     super(props);

@@ -13,14 +13,18 @@ class Product extends Component {
       productPrice: null,
       productDescription: null,
       productName: null,
+      productQuantity: 0,
       redirect: false
     };
+
+    this.addToCart = this.addToCart.bind(this);
+    this.changeProductWeight = this.changeProductWeight.bind(this);
   }
   componentDidMount() {
-    
+
     this.getToken();
   }
- 
+
 
   componentWillMount() {
     if(sessionStorage.getItem('token')){
@@ -71,14 +75,14 @@ class Product extends Component {
     .then(function(data){
       obj = JSON.parse(JSON.stringify(data));
       console.log(obj);
-    }) 
+    })
     .then(() => {
       if(obj===true){
         this.getProduct(token);
       }
       else{
         console.log("artigo nao existe");
-      }    
+      }
     });
 
   }
@@ -113,7 +117,7 @@ class Product extends Component {
         this.setState({ productDescription: desc })
       });
 
-  
+
       //Base/Artigos/DaValorAtributo/MCA/Descricao
   }
 
@@ -139,10 +143,41 @@ class Product extends Component {
       });
   }
 
+  addToCart(event) {
+    let productJSON = this.createProductJSON();
+
+    if(sessionStorage.getItem('cart')){
+      let cart = JSON.parse(sessionStorage.getItem('cart'));
+      console.log(cart);
+      cart.push(productJSON);
+      console.log(cart);
+      sessionStorage.setItem('cart', JSON.stringify(cart));
+    }
+    else{
+      let cart = [];
+      cart.push(productJSON);
+      console.log(cart);
+      sessionStorage.setItem('cart', JSON.stringify(cart));
+    }
+    event.preventDefault();
+  }
+
+  createProductJSON() {
+      let productJSON = {};
+      productJSON.id = this.state.productID;
+      productJSON.name = this.state.productName;
+      productJSON.description = this.state.productDescription;
+      productJSON.price = this.state.productPrice;
+      productJSON.quantity = this.state.productQuantity;
+
+      return productJSON;
+  }
+
+  changeProductWeight(event){
+     this.setState({productQuantity: event.target.value});
+  }
 
   render() {
-
-
 
     if(this.state.redirect){
       return (<Redirect to={'/login'}/>)
@@ -161,19 +196,20 @@ class Product extends Component {
                 <p className="product-description">
                 {this.state.productDescription}
                 </p>
-              </div>
+
               <div className="product price">
                 <h4>Preço:</h4>
                 <h4>{this.state.productPrice} € <small className="text-muted">/kg</small></h4>
               </div>
+            </div>
               <div className="form-container">
-                <form className="form-horizontal">
+                <form className="form-horizontal" onSubmit={this.addToCart}>
                   <div className="form-group">
                     <div className="row">
                       <label className="control-label col-lg-3">Quantidade em kg:</label>
                       <div className="col-lg-2">
                         <input type="number" min="0.5" max="10" step="0.5" className="form-control" id="quantity" placeholder="Kg"
-                          name="quantity"></input>
+                          name="quantity" value={this.state.productWeight} onChange={this.changeProductWeight}></input>
                       </div>
                       <div className="col-lg-4">
                         <button type="submit" className="btn btn-primary"> Comprar </button>

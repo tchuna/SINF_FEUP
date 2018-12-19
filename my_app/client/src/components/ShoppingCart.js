@@ -24,51 +24,54 @@ class Cart extends Component {
     if(this.state.redirect){
       return (<Redirect to={'/login'}/>)
     }
+    var list;
+    var totalPrice = 0;
+    if(sessionStorage.getItem('cart')){
+       list = (JSON.parse(sessionStorage.getItem('cart'))).map( product =>{
+        let subTotal = Math.round(product.price * product.quantity * 100) / 100 ;
+        totalPrice += subTotal;
+        return (
+          <tr>
+            <td data-th="Product"> <img src={"img/" + product.id + ".png"} alt="..."  width="80" height="80" className="img-responsive" /></td>
+            <td> <p>{product.description}</p> </td>
+            <td data-th="Price" className="text-center">{product.price} €</td>
+            <td data-th="Quantity" className="text-center">{product.quantity} Kg</td>
+            <td data-th="Subtotal" className="text-center">{subTotal} €</td>
+            <td className="actions" data-th="">
+              <button className="btn btn-danger btn-sm"><i className="fa fa-times-circle"></i></button>
+            </td>
+          </tr>
+        )
+      })
+    }
+
     return (
       <div>
         <Navigation />
-        <div class="container mt-5">
-          <table id="cart" className="table table-hover table-condensed"></table>
+          <table id="cart" className="table table-hover table-condensed container mt-5">
           <thead>
             <tr>
               <th>Product</th>
-              <th >Price</th>
-              <th>Quantity</th>
+              <th></th>
+              <th className="text-center">Price</th>
+              <th className="text-center">Quantity</th>
               <th className="text-center">Subtotal</th>
-              <th ></th>
+              <th> </th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td data-th="Product">
-                <div class="row">
-                  <div className="col-sm-2 hidden-xs"><img src="http://placehold.it/80x80" alt="..." className="img-responsive" /></div>
-                  <div className="col-sm-10">
-                    <h4 className="nomargin">Product 1</h4>
-                    <p>Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet.</p>
-                  </div>
-                </div>
-              </td>
-              <td data-th="Price">1.99€</td>
-              <td data-th="Quantity">
-                <input type="number" className="form-control text-center" value="1"></input>
-              </td>
-              <td data-th="Subtotal" className="text-center">1.99</td>
-              <td className="actions" data-th="">
-                <button className="btn btn-danger btn-sm"><i class="fa fa-times-circle"></i></button>
-              </td>
-            </tr>
+            {list}
           </tbody>
           <tfoot>
             <tr>
-              <td><button className="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</button></td>
-              <td colspan="2" class="hidden-xs"></td>
-              <td className="hidden-xs text-center"><strong>Total 1.99€</strong></td>
-              <td><button className="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></button></td>
+              <td> <a className="nav-link" href="/homepage">Continue Shopping<span className="sr-only"></span></a> </td>
+              <td colSpan="2" className="hidden-xs"></td>
+              <td className="hidden-xs text-center"><strong>Total {totalPrice} €</strong></td>
+              <td><button className="btn btn-success btn-block">Checkout <i className="fa fa-angle-right"></i></button></td>
             </tr>
           </tfoot>
+          </table>
         </div>
-      </div>
     );
   }
 }
