@@ -133,8 +133,10 @@ class Login extends Component {
         sessionStorage.setItem('token', token);
         sessionStorage.setItem('userID', this.state.username);
         this.setState({redirect: true});
-        //store.set('loggedIn', true);
-        //history.push('/users');
+      }
+      else{
+        this.setState({ error: 'Wrong Password' })
+
       }
     });
 
