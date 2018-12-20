@@ -6,9 +6,11 @@ export class Navigation extends React.Component {
     super(props);
     this.state = {
       logedIn: false,
+      searchInput: null,
       doLogOut: false,
     };
     this.logout = this.logout.bind(this);
+    this.searchInput = this.searchInput.bind(this);
   }
 
   componentWillMount() {
@@ -30,7 +32,14 @@ export class Navigation extends React.Component {
     this.setState({doLogOut: true});
   }
 
+  searchInput(event){
+     this.setState({searchInput: event.target.value});
+  }
+
   render() {
+
+    let profile = sessionStorage.getItem('userID');
+    profile = '/profile/'+profile;
 
     if(this.state.doLogOut){
       return (<Redirect to={'/login'}/>)
@@ -63,19 +72,19 @@ export class Navigation extends React.Component {
               <a className="nav-link" href="/category/LGM">Legumes</a>
             </li>
           </ul>
-          <form className="form-inline my-2 my-lg-0" action="/search">
-            <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+          <form className="form-inline my-2 my-lg-0" action={"/search/" + this.state.searchInput}>
+            <input className="form-control mr-sm-2" type="search" onChange={this.searchInput} placeholder="Search" aria-label="Search" />
             <button className="btn btn-success my-2 my-sm-0" type="submit">Search</button>
           </form>
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link" href="/profile"><i className="fas fa-sign-in-alt"></i> Profile</a>
-            </li>
-            <li className="nav-item">
-              <button className="btn my-2 my-sm-0" onClick={this.logout}>Logout</button>
+              <a className="nav-link" href={profile}><i className="fas fa-sign-in-alt"></i> My Profile</a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="/cart"><i className="fas fa-shopping-cart"></i> Shopping Cart</a>
+            </li>
+            <li className="nav-item">
+              <button className="btn my-2 my-sm-0" onClick={this.logout}>Logout</button>
             </li>
           </ul>
         </div>

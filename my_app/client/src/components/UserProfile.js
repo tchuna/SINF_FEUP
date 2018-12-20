@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Navigation from './Navigation.js';
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import qs from 'qs';
 
 class UserProfile extends Component {
@@ -14,16 +14,17 @@ class UserProfile extends Component {
       nif: null,
       address: null,
       phone: null,
+      orders: null,
 
     };
   }
 
   componentWillMount() {
-    if(sessionStorage.getItem('token')){
-      console.log("ja existe token");
+    if (sessionStorage.getItem('token')) {
+      console.log("existe token");
     }
-    else{
-      this.setState({redirect: true});
+    else {
+      this.setState({ redirect: true });
     }
   }
   componentDidMount() {
@@ -46,7 +47,7 @@ class UserProfile extends Component {
         Line: 'professional'
       })
     }).then(response => response.json())
-      .then(function(data){
+      .then(function (data) {
         obj = JSON.parse(JSON.stringify(data));
       })
       .then(() => {
@@ -55,10 +56,10 @@ class UserProfile extends Component {
       });
   }
 
-  userExists(token){
+  userExists(token) {
 
-    var baseExists ='http://localhost:2018/WebApi/Base/Clientes/Existe/'
-    var existsURL = baseExists+this.state.userID;
+    var baseExists = 'http://localhost:2018/WebApi/Base/Clientes/Existe/'
+    var existsURL = baseExists + this.state.userID;
     console.log(existsURL);
     var obj;
     fetch(existsURL, {
@@ -67,19 +68,19 @@ class UserProfile extends Component {
         'Authorization': 'Bearer ' + token
       },
     }).then(response => response.json())
-    .then(function(data){
-      obj = JSON.parse(JSON.stringify(data));
-      console.log(obj);
-    })
-    .then(() => {
-      if(obj===true){
-        this.getClient(token);
-        console.log("cliente existe");
-      }
-      else{
-        console.log("artigo nao existe");
-      }
-    });
+      .then(function (data) {
+        obj = JSON.parse(JSON.stringify(data));
+        console.log(obj);
+      })
+      .then(() => {
+        if (obj === true) {
+          this.getClient(token);
+          console.log("cliente existe");
+        }
+        else {
+          console.log("artigo nao existe");
+        }
+      });
   }
   getClient(token) {
 
@@ -99,99 +100,133 @@ class UserProfile extends Component {
         'Authorization': 'Bearer ' + token
       },
     }).then(response => response.json())
-    .then(function(data){
-      console.log(data);
-      nome = data.Nome;
-      morada = data.Morada + ',' +data.Localidade;
-      telefone= data.Telefone;
-      nif = data.NumContribuinte;
-      console.log(telefone);
-    })
-    .then(() => {
-      this.setState({ name: nome })
-      this.setState({ phone: telefone })
-      this.setState({ address: morada })
-      this.setState({ nif: nif })
-    });
-      
+      .then(function (data) {
+        //console.log(data);
+        nome = data.Nome;
+        morada = data.Morada + ',' + data.Localidade;
+        telefone = data.Telefone;
+        nif = data.NumContribuinte;
+        //console.log(telefone);
+      })
+      .then(() => {
+        this.setState({ name: nome })
+        this.setState({ phone: telefone })
+        this.setState({ address: morada })
+        this.setState({ nif: nif })
+        this.getClientOrders(token);
+      });
+
   }
-  render() {
-    if(this.state.redirect){
-      return (<Redirect to={'/login'}/>)
+
+
+  getClientOrders(token) {
+
+    let entity = sessionStorage.getItem('userID');
+    entity = "\'" + entity + "\'";
+    const query = "SELECT CD.Data, CD.TipoDoc, CD.Documento, CD.NumDoc, CD.TotalDocumento, CD.Nome, CD.Entidade,CDS.Estado FROM CabecDoc CD INNER JOIN CabecDocStatus CDS ON CDS.IdCabecDoc = CD.Id WHERE CD.TipoDoc='ECL' and CD.Entidade =";
+    entity = query + entity;
+    var url = JSON.stringify(entity);
+    //console.log(url)
+    /**
+     "SELECT CD.Data, CD.TipoDoc, CD.Documento, CD.NumDoc, CD.TotalDocumento, CD.Nome, CD.Entidade,
+    CDS.Estado FROM CabecDoc CD INNER JOIN CabecDocStatus CDS ON CDS.IdCabecDoc = CD.Id WHERE CD.TipoDoc='ECL' and CD.Entidade = 'C0001'"
+     */
+    var obj;
+    fetch('http://localhost:2018/WebApi/Administrador/Consulta', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      },
+      body: url,
+    }).then(response => response.json())
+      .then(function (data) {
+        obj = JSON.parse(JSON.stringify(data));
+        obj = obj.DataSet.Table;
+        console.log(obj);
+
+      })
+      .then(() => {
+        this.setState({ orders: obj })
+      });
+
+  }
+  // <th class="scope">{s.Data}</th>
+  orderItems = () => {
+    if (this.state.orders != null) {
+      return this.state.orders.map(s => {
+        return <tr>
+          <th scope="row">{s.NumDoc}</th>
+          <td>{s.Data}</td>
+          <td>{s.TotalDocumento}</td>
+          <td>{s.Estado}</td>
+        </tr>
+      })
     }
+  }
+
+
+  render() {
+    if (this.state.redirect) {
+      return (<Redirect to={'/login'} />)
+    }
+
+
     return (
       <div>
         <Navigation />
-          <div className="container main-container mt-5">
-            <div className="row">
-              <div className="col-lg-12">
-                <h3>{this.state.userID}</h3>
-              </div>
-              <div className="col-lg-3 text-center">
-                <img className="img-fluid" src="https://uetitalia.it/wp-content/uploads/2018/09/blog-placeholder.png" alt="Chania"></img>
-                <br /><br />
-                <a href="/" className="btn btn-primary float-center"><i className="fas fa-edit"></i> Edit profile</a>
-              </div>
+        <div className="container main-container mt-5">
+          <div className="row">
+            <div className="col-lg-12">
+              <h3>{this.state.userID}</h3>
+            </div>
+            <div className="col-lg-3 text-center">
+              <img className="img-fluid" src="https://img.icons8.com/ios/1600/user-male-circle-filled.png" alt="Chania"></img>
+              <br /><br />
+              <a href="/" className="btn btn-primary float-center"><i className="fas fa-edit"></i> Edit profile</a>
+            </div>
 
-              <div className="col-lg-9">
-                <p className="user-bio">
+            <div className="col-lg-9">
+              <p className="user-bio">
                 <strong>Nome: </strong> {this.state.name}
-                </p>
-                <p className="user-bio">
+              </p>
+              <p className="user-bio">
                 <strong>NIF: </strong>{this.state.nif}
-               
-                </p>
-                <p className="user-bio">
+
+              </p>
+              <p className="user-bio">
                 <strong>Telefone: </strong> {this.state.phone}
-                </p>
-                <p className="user-bio">
+              </p>
+              <p className="user-bio">
                 <strong>Morada:</strong> {this.state.address}
-                </p>
-              </div>
+              </p>
             </div>
-            <br />
-            <div className="row">
-              <div className="col-lg-12">
-                <h3>Shopping historic</h3>
-              </div>
-              <div className="col-lg-8 offset-2">
-                <ul className="list-group">
-                  <li className="list-group-item"><a href="/">Order 1</a></li>
-                  <li className="list-group-item"><a href="/">Order 2</a></li>
-                  <li className="list-group-item"><a href="/">Order 3</a></li>
-                </ul>
-              </div>
+          </div>
+          <br/>
+          <br/>
+
+          <div className="row">
+            <div className="col-lg-12">
+              <h3>Shopping History</h3>
             </div>
-            <div className="row">
-              <div className="col-lg-12">
-                <h3>Current orders</h3>
-              </div>
-              <div className="col-lg-8 offset-2" >
-                <ul className="list-group">
-                  <li className="list-group-item d-flex justify-content-between align-items-center">
-                    <a href="/">Order A </a>
-                    <span className="badge badge-success badge-pill">Complete</span>
-                  </li>
-                  <li className="list-group-item d-flex justify-content-between align-items-center">
-                    <a href="/">Order B </a>
-                    <span className="badge badge-secondary badge-pill">Ongoing</span>
-                  </li>
-                  <li className="list-group-item d-flex justify-content-between align-items-center">
-                    <a href="/">Order C</a>
-                    <span className="badge badge-danger badge-pill">Cancelled</span>
-                  </li>
-                  <li className="list-group-item d-flex justify-content-between align-items-center">
-                    <a href="/">Order D</a>
-                    <span className="badge badge-warning badge-pill">Pending</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="row mt-3">
-              <div className="col-lg-12 text-center">
-                <a href="/" className="btn btn-secondary float-center"><i className="fas fa-arrow-circle-left "></i> Retroceed</a>
-              </div>
-            </div>
+            <br/>
+          <br/>
+            <table className="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">NumDocumento</th>
+                  <th scope="col">Data</th>
+                  <th scope="col">TotalDocumento</th>
+                  <th scope="col">Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                  {this.orderItems()}
+              </tbody>
+            </table>
+          </div>
+          <br/>
+          <br/>
         </div>
       </div>
     );

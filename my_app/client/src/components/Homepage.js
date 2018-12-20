@@ -3,105 +3,14 @@ import { Navigation, Footer } from './Navigation.js';
 import qs from 'qs';
 import {Redirect} from 'react-router-dom';
 
-class HomepageSuggestions extends Component {
+class HomepageSuggestionsNew extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: null,
-    };
-  }
-
-  componentDidMount() {
-    this.getData();
-  }
-
-  getData() {
-    // Fetch Products
-    /*
-    var obj;
-    fetch('http://localhost:2018/WebApi/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: qs.stringify({
-        username: 'FEUP',
-        password: 'qualquer1',
-        company: 'FRUITS',
-        instance: 'DEFAULT',
-        grant_type: 'password',
-        line: 'professional'
-      })
-    }).then(response => response.json())
-      .then(function(data) {
-        console.log(JSON.parse(JSON.stringify(data)));
-      });
-      .then(() => {
-        this.getProducts(obj.access_token);
-      });*/
-  }
-/**
-  getProducts(token){
-    fetch('http://localhost:2018/WebApi/Base/Artigos/Edita/APV', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'cache-control': 'no-cache',
-        'Authorization': 'Bearer '+token
-      },
-    }).then(response => response.json())
-      .then(data => this.setState({ data }));
-  }
- */
-  getProducts(token){
-    fetch('http://localhost:2018/WebApi/Base/Artigos/Edita/APV', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'cache-control': 'no-cache',
-        'Authorization': 'Bearer '+token
-      },
-    }).then(response => response.json())
-      .then(data => this.setState({ data }));
-  }
-
-  render() {
-    //console.log(this.state);
-    var obj;
-    var a;
-    if(this.state.data){
-      obj =JSON.parse(JSON.stringify(this.state.data));
-      console.log(obj.Descricao);
-      a = obj.Descricao;
-    }
-    return (
-      <div className="mb-3">
-        <h4>Sugestões</h4>
-        <hr/>
-        <div className="row">
-
-          <div className="col-lg-2">
-            <img className="img-fluid mb-2" src="/img/img-placeholder.png" alt="Product" />
-            <h6>Name: {a}</h6>
-            <h6>Price:</h6>
-          </div>
-          <div className="col-lg-2">
-            <img className="img-fluid mb-2" src="/img/img-placeholder.png" alt="Product" />
-            <h6>Name:</h6>
-            <h6>Price:</h6>
-          </div>
-
-        </div>
-      </div>
-    );
-  }
-}
-
-class HomepageNew extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: null,
+      suggestedData: null,
+      newestProducts: null,
+      suggestedProducts: null
     };
   }
 
@@ -131,72 +40,122 @@ class HomepageNew extends Component {
       })
       .then(() => {
         this.getProductsNew(obj.access_token);
+      })
+      .then(() => {
+        this.getProductsSuggestions(obj.access_token);
       });
 }
+
 getProductsNew(token){
-  fetch('http://localhost:2018/WebApi/Base/Artigos/LstArtigos', {
-    method: 'GET',
+  let query = JSON.stringify("Select Artigo, Descricao, DataUltimaActualizacao from Artigo");
+  fetch('http://localhost:2018/WebApi/Administrador/Consulta', {
+    method: 'POST',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/json',
       'cache-control': 'no-cache',
       'Authorization': 'Bearer '+token
     },
+    body: query,
   }).then(response => response.json())
-    .then(data => this.setState({ data }));
+  .then(data => this.setState({ data }))
+  .then(() => {
+    this.getNewestProducts();
+  });
 }
 
-  render() {
+getProductsSuggestions(token){
+  let query = JSON.stringify("Select Artigo from LinhasDoc Group By Artigo Order By Count(*) Desc");
+  fetch('http://localhost:2018/WebApi/Administrador/Consulta', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'cache-control': 'no-cache',
+      'Authorization': 'Bearer '+token
+    },
+    body: query,
+  }).then(response => response.json())
+    .then(suggestedData => this.setState({ suggestedData }))
+    .then(() => {
+      this.getSuggestionsProducts();
+    });
+}
 
-    //Selecting 6 of the most recents elements
-    var newProductsName = [];
-    if(this.state.data){
+  getNewestProducts() {
+    var newestProducts = [];
+
+    if (this.state.data) {
       let obj =JSON.parse(JSON.stringify(this.state.data));
       let products = obj.DataSet.Table;
-      let newProducts = products.slice(products.length-6, products.length);
-      let i;
-      for(i=0; i<newProducts.length;i++){
-        newProductsName[i] = newProducts[i].Artigo;
-      }
+      products.sort(function(a, b) {
+        a = new Date(a.DataUltimaActualizacao);
+        b = new Date(b.DataUltimaActualizacao);
+      return a>b ? -1 : a<b ? 1 : 0;
+    });
+    newestProducts = products.slice(0,6);
+
     }
+    this.setState({newestProducts: newestProducts});
+  }
+
+  getSuggestionsProducts() {
+    var suggestedProducts = [];
+
+    if (this.state.suggestedData) {
+      let obj =JSON.parse(JSON.stringify(this.state.suggestedData));
+      let products = obj.DataSet.Table;
+        suggestedProducts = products.slice(0,6);
+    }
+    this.setState({suggestedProducts: suggestedProducts});
+  }
+
+  render() {
+    var newProducts;
+    var suggestedProducts;
+
+    if(this.state.suggestedProducts != null){
+      console.log(this.state.suggestedProducts);
+       suggestedProducts = this.state.suggestedProducts.map(product =>{
+        return (
+          <div key={product.Artigo} className="col-lg-2">
+            <a href={"products/" + product.Artigo}>
+              <img className="img-fluid" width="200" height="160" src={"img/" + product.Artigo + ".png"} alt="Product" />
+            </a>
+          </div>
+        )
+      })
+    }
+
+    if(this.state.newestProducts != null){
+       newProducts = this.state.newestProducts.map(product =>{
+        return (
+          <div key={product.Artigo} className="col-lg-2">
+            <a href={"products/" + product.Artigo}>
+              <img className="img-fluid"  width="200" height="160" src={"img/" + product.Artigo + ".png"} alt="Product" />
+            </a>
+          </div>
+        )
+      })
+    }
+
     return (
+    <div>
       <div className="mb-3">
-        <h4>Novidades</h4>
-        <hr />
+        <h4>Sugestões</h4>
+        <hr/>
         <div className="row">
-          <div className="col-lg-2">
-            <a href={"products/" + newProductsName[5]}>
-              <img className="img-fluid" src={"img/" + newProductsName[5] + ".png"} alt="Product" />
-            </a>
-          </div>
-          <div className="col-lg-2">
-            <a href={"products/" + newProductsName[4]}>
-              <img className="img-fluid" src={"img/" + newProductsName[4] + ".png"} alt="Product" />
-            </a>
-          </div>
-          <div className="col-lg-2">
-            <a href={"products/" + newProductsName[3]}>
-              <img className="img-fluid" src={"img/" + newProductsName[3] + ".png"} alt="Product" />
-            </a>
-          </div>
-          <div className="col-lg-2">
-            <a href={"products/" + newProductsName[2]}>
-              <img className="img-fluid" src={"img/" + newProductsName[2] + ".png"} alt="Product" />
-            </a>
-          </div>
-          <div className="col-lg-2">
-            <a href={"products/" + newProductsName[1]}>
-              <img className="img-fluid" src={"img/" + newProductsName[1] + ".png"} alt="Product" />
-            </a>
-          </div>
-          <div className="col-lg-2">
-            <a href={"products/" + newProductsName[0]}>
-              <img className="img-fluid" src={"img/" + newProductsName[0] + ".png"} alt="Product" />
-            </a>
-          </div>
+          {suggestedProducts}
         </div>
       </div>
-    );
-  }
+      <div className="mb-3">
+        <h4>Novidades</h4>
+        <hr/>
+        <div className="row">
+          {newProducts}
+        </div>
+      </div>
+    </div>
+      )
+    }
 }
 
 class HomepageCategory extends Component {
@@ -250,8 +209,7 @@ class Homepage extends Component {
         <Navigation />
         <div className="container main-container mt-5 mb-3">
           <HomepageCategory />
-          <HomepageSuggestions />
-          <HomepageNew />
+          <HomepageSuggestionsNew />
         </div>
         <Footer />
       </div>

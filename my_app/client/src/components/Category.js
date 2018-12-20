@@ -131,7 +131,7 @@ class Product extends Component {
         <a href={link}>
         <div className="card text-center">
           <img className="img-fluid mb-3" src={'../img/' + this.props.id + '.png'} alt="img" />
-            <h5 >{this.props.Descricao}</h5>
+            <h5>{this.props.Descricao}</h5>
             <p>Price:</p>
         </div>
         </a>
