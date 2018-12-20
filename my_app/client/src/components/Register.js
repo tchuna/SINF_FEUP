@@ -15,12 +15,11 @@ class Register extends Component {
       redirect: false,
       exists: false,
       error: '',
-      username: '',
       password: '',
       token: ''
     };
     this.handlePassChange = this.handlePassChange.bind(this);
-    this.handleUserChange = this.handleUserChange.bind(this);
+    this.handleClienteChange = this.handleClienteChange.bind(this);
     this.handleNomeChange = this.handleNomeChange.bind(this);
     this.handleNCChange = this.handleNCChange.bind(this);
     this.handlePaisChange = this.handlePaisChange.bind(this);
@@ -29,32 +28,7 @@ class Register extends Component {
     this.dismissError = this.dismissError.bind(this);
     this.validateUser = this.validateUser.bind(this);
     this.registerUser = this.registerUser.bind(this);
-  }
-
-  getToken() {
-    var obj;
-    fetch('http://localhost:2018/WebApi/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: qs.stringify({
-        username: 'FEUP',
-        password: 'qualquer1',
-        company: 'FRUITSHOP',
-        instance: 'Default',
-        grant_type: 'password',
-        Line: 'professional'
-      })
-    }).then(response => response.json())
-      .then(function (data) {
-        obj = JSON.parse(JSON.stringify(data));
-      })
-      .then(() => {
-        this.validateUser(obj.access_token);
-      });
-    //console.log(this.state);
-    //console.log(obj);
+    this.getToken = this.getToken.bind(this);
   }
 
   dismissError() {
@@ -64,16 +38,11 @@ class Register extends Component {
   handleSubmit(evt) {
     evt.preventDefault();
 
-    if (!this.state.username) {
-      return this.setState({ error: 'Username is required' });
-    }
-
     if (!this.state.password) {
       return this.setState({ error: 'Password is required' });
     }
-    //this.validateUser();
+
     this.getToken();
-    //console.log(this.state.token);
     return this.setState({ error: '' });
   }
 
@@ -83,9 +52,9 @@ class Register extends Component {
     });
   }
 
-  handleUserChange(evt) {
+  handleClienteChange(evt) {
     this.setState({
-      username: evt.target.value,
+      cliente: evt.target.value,
     });
   };
 
@@ -113,10 +82,33 @@ class Register extends Component {
     });
   };
 
+  getToken() {
+    var obj;
+    fetch('http://localhost:2018/WebApi/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: qs.stringify({
+        username: 'FEUP',
+        password: 'qualquer1',
+        company: 'FRUITSHOP',
+        instance: 'Default',
+        grant_type: 'password',
+        Line: 'professional'
+      })
+    }).then(response => response.json())
+      .then(function (data) {
+        obj = JSON.parse(JSON.stringify(data));
+      })
+      .then(() => {
+        this.validateUser(obj.access_token);
+      });
+  }
+
   validateUser(token) {
     var baseURL = 'http://localhost:2018/WebApi/Base/Clientes/Existe/';
     var newURL = baseURL + this.state.username;
-    //console.log(newURL);
     fetch(newURL, {
       method: 'GET',
       headers: {
@@ -130,8 +122,7 @@ class Register extends Component {
         if (this.state.exists === true) {
           this.setState({ error: 'User ja existe' })
         } else if (this.state.exists === false) {
-          console.log('Creating user:' + this.state.username);
-          this.registerUser();
+          this.registerUser(token);
         }
       });
   }
@@ -142,22 +133,21 @@ class Register extends Component {
     fetch(baseURL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
         'cache-control': 'no-cache',
         'Authorization': 'Bearer ' + token
       },
-      body: {
-        "Cliente": this.state.cliente,
-        "Nome": this.state.name,
-        "NumContribuinte": this.state.numContribuinte,
-        "Pais": this.pais,
-        "Moeda": this.pais,
-        "CDU_CampoVar2": this.state.password
-      }
-    }).then(response => response.json())
+      body: JSON.stringify({
+        Cliente: this.state.cliente,
+        Nome: this.state.nome,
+        NumContribuinte: this.state.numContribuinte,
+        Pais: this.state.pais,
+        Moeda: this.state.moeda
+      })
+    })/*.then(response => response.json())
       .then(() => {
         console.log("Created user.");
-      });
+      });*/
   }
 
   render() {
@@ -191,14 +181,14 @@ class Register extends Component {
 
                     <div className="form-label-group mb-3">
                       <label htmlFor="inputCliente">Cliente</label>
-                      <input type="text" id="inputCliente" className="form-control" placeholder="Cliente" required autoFocus value={this.state.username} onChange={this.handleUserChange}></input>
+                      <input type="text" id="inputCliente" className="form-control" placeholder="Cliente" required autoFocus value={this.state.cliente} onChange={this.handleClienteChange}></input>
                     </div>
 
                     <div className="form-label-group mb-3">
                       <label htmlFor="inputNome">Nome</label>
                       <input type="text" id="inputNome" className="form-control" placeholder="Nome" required value={this.state.nome} onChange={this.handleNomeChange}></input>
                     </div>
-                    
+
                     <div className="form-label-group mb-3">
                       <label htmlFor="inputNumContribuinte">Numero de Contribuinte</label>
                       <input type="text" id="inputNumContribuinte" className="form-control" placeholder="Numero de Contribuinte" required value={this.state.numcontribuinte} onChange={this.handleNCChange}></input>
