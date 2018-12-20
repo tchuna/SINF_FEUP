@@ -142,9 +142,10 @@ class Register extends Component {
         Nome: this.state.nome,
         NumContribuinte: this.state.numContribuinte,
         Pais: this.state.pais,
-        Moeda: this.state.moeda
+        Moeda: this.state.moeda,
+        CDU_CampoVar2: this.state.password
       })
-    }).then( () => this.setState({ redirect: true }));/*.then(response => response.json())
+    }).then(() => this.setState({ redirect: true }));/*.then(response => response.json())
       .then((response) => {
         console.log(response);
       });*/
