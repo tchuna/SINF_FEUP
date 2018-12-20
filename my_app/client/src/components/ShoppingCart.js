@@ -134,8 +134,8 @@ class Cart extends Component {
 
         return (
           <tr>
-            <td data-th="Product"> <img src={"img/" + product.id + ".png"} alt="..."  width="80" height="80" className="img-responsive" /></td>
-            <td> <p>{product.name}</p> </td>
+            <td data-th="Product"> <img src={"img/" + product.id + ".png"} alt="..."  width="100" height="80" className="img-responsive" /></td>
+            <td> <p> {product.name}</p> </td>
             <td data-th="Price"  className="text-center">{product.price} €</td>
             <td data-th="Quantity" className="text-center">{product.quantity} Kg</td>
             <td data-th="Subtotal" className="text-center">{subTotal} €</td>

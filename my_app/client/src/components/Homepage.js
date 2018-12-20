@@ -116,9 +116,9 @@ getProductsSuggestions(token){
       console.log(this.state.suggestedProducts);
        suggestedProducts = this.state.suggestedProducts.map(product =>{
         return (
-          <div className="col-lg-2">
+          <div key={product.Artigo} className="col-lg-2">
             <a href={"products/" + product.Artigo}>
-              <img className="img-fluid" src={"img/" + product.Artigo + ".png"} alt="Product" />
+              <img className="img-fluid" width="200" height="160" src={"img/" + product.Artigo + ".png"} alt="Product" />
             </a>
           </div>
         )
@@ -128,9 +128,9 @@ getProductsSuggestions(token){
     if(this.state.newestProducts != null){
        newProducts = this.state.newestProducts.map(product =>{
         return (
-          <div className="col-lg-2">
+          <div key={product.Artigo} className="col-lg-2">
             <a href={"products/" + product.Artigo}>
-              <img className="img-fluid" src={"img/" + product.Artigo + ".png"} alt="Product" />
+              <img className="img-fluid"  width="200" height="160" src={"img/" + product.Artigo + ".png"} alt="Product" />
             </a>
           </div>
         )

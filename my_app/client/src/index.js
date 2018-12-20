@@ -26,7 +26,7 @@ ReactDOM.render(
             <Route exact path="/profile/:id" component={UserProfile} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
-            <Route exact path="/search" component={Search} />
+            <Route exact path="/search/:id" component={Search} />
             <Route exact path="/category/:category" component={Category} />
             <Route exact path="/cart" component={ShoppingCart} />
         </div>
