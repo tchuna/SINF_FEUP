@@ -144,15 +144,15 @@ class Register extends Component {
         Pais: this.state.pais,
         Moeda: this.state.moeda
       })
-    })/*.then(response => response.json())
-      .then(() => {
-        console.log("Created user.");
+    }).then( () => this.setState({ redirect: true }));/*.then(response => response.json())
+      .then((response) => {
+        console.log(response);
       });*/
   }
 
   render() {
     if (this.state.redirect) {
-      //return (<Redirect to={'/login'} />)
+      return (<Redirect to={'/login'} />)
     }
 
     if (sessionStorage.getItem('token')) {
