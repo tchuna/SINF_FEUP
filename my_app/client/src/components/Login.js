@@ -161,7 +161,7 @@ class Login extends Component {
             <div className="mx-auto">
               <div className="card card-signin my-5">
                 <div className="card-body">
-                  <h5 className="card-title text-center">Sign In</h5>
+                  <h5 className="card-title text-center" style={{ minWidth: "300px" }}>Sign In</h5>
                   <form className="form-signin" onSubmit={this.handleSubmit}>
                     {
 
@@ -175,13 +175,14 @@ class Login extends Component {
 
 
                     }
+
                     <div className="form-label-group mb-3">
                       <label>Username: </label>
-                      <input type="text" data-test="username" value={this.state.username} onChange={this.handleUserChange} />
+                      <input type="text" data-test="username" className="form-control" value={this.state.username} onChange={this.handleUserChange} />
                     </div>
                     <div className="form-label-group mb-3">
                       <label>Password: </label>
-                      <input type="password" data-test="password" value={this.state.password} onChange={this.handlePassChange} />
+                      <input type="password" data-test="password" className="form-control" value={this.state.password} onChange={this.handlePassChange} />
                     </div>
 
                     <button className="btn btn-primary btn-block text-uppercase" type="submit">Sign in</button>

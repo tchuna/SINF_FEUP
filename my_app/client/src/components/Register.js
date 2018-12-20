@@ -107,8 +107,12 @@ class Register extends Component {
   }
 
   validateUser(token) {
+    if(token) {
+      sessionStorage.setItem('token', token);
+      sessionStorage.setItem('userID', this.state.cliente);
+    }
     var baseURL = 'http://localhost:2018/WebApi/Base/Clientes/Existe/';
-    var newURL = baseURL + this.state.username;
+    var newURL = baseURL + this.state.cliente;
     fetch(newURL, {
       method: 'GET',
       headers: {
@@ -171,7 +175,7 @@ class Register extends Component {
 
   render() {
     if (this.state.redirect) {
-      return (<Redirect to={'/login'} />)
+      return (<Redirect to={'/homepage'} />)
     }
 
     return (
@@ -182,7 +186,7 @@ class Register extends Component {
             <div className="mx-auto">
               <div className="card card-signin my-5">
                 <div className="card-body">
-                  <h5 className="card-title text-center">Register</h5>
+                  <h5 className="card-title text-center" style={{ minWidth: "300px" }} >Register</h5>
                   <form className="form-signup" onSubmit={this.handleSubmit}>
                     {
                       this.state.error &&
