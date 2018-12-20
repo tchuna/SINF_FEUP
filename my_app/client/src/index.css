@@ -81,6 +81,10 @@
  [tabindex="-1"]:focus {
    outline: 0 !important;
  }
+
+ #category{
+   max-height: 150px;
+ }
  
  hr {
    -webkit-box-sizing: content-box;

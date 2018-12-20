@@ -15,8 +15,12 @@ class UserProfile extends Component {
       address: null,
       phone: null,
       orders: null,
+      clicked: false,
+      inputName: '',
+      inputAddress:'',
 
     };
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentWillMount() {
@@ -165,12 +169,29 @@ class UserProfile extends Component {
     }
   }
 
+   handleClick(e) {
+    e.preventDefault();
+    console.log('The btn was clicked.');
+    this.setState({clicked : true});
+  }
+  open = () => {
+    if(this.state.clicked)
+      return <EditForm/>
+
+  }
+  handleClick() {
+    this.setState(state => ({
+      clicked: !state.clicked
+    }));
+  }
+
+
+
 
   render() {
     if (this.state.redirect) {
       return (<Redirect to={'/login'} />)
     }
-
 
     return (
       <div>
@@ -183,7 +204,9 @@ class UserProfile extends Component {
             <div className="col-lg-3 text-center">
               <img className="img-fluid" src="https://img.icons8.com/ios/1600/user-male-circle-filled.png" alt="Chania"></img>
               <br /><br />
-              <a href="/" className="btn btn-primary float-center"><i className="fas fa-edit"></i> Edit profile</a>
+              <button className="btn btn-primary float-center" onClick={this.handleClick}> Edit profile</button>
+              {this.open()}
+
             </div>
 
             <div className="col-lg-9">
@@ -230,6 +253,48 @@ class UserProfile extends Component {
         </div>
       </div>
     );
+  }
+}
+
+class EditForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+
+    };
+  }
+  render() {
+    return(
+      <div>
+      <form className="form-signin" onSubmit={this.handleSubmit}>
+                    {
+
+                      this.state.error &&
+                      <div className="alert alert-warning alert-dismissible fade show" role="alert">
+                        <button type="button" className="close" onClick={this.dismissError} data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                        <strong> {this.state.error}</strong>
+                      </div>
+
+
+                    }
+                    <div className="form-label-group mb-3">
+                      <label>Novo nome: </label>
+                      <input type="text" data-test="name" value={this.state.inputName} onChange={this.handleNameChange} />
+                    </div>
+                    <div className="form-label-group mb-3">
+                      <label>Novo telefone: </label>
+                      <input type="text" data-test="phone" value={this.state.inputPhone} onChange={this.handlePhoneChange} />
+                    </div>
+
+                    <button className="btn btn-primary btn-block text-uppercase" type="submit">Sign in</button>
+
+                  </form>  
+      </div>
+
+    );
+
   }
 }
 
