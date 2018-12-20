@@ -186,6 +186,8 @@ class Login extends Component {
 
                     <button className="btn btn-primary btn-block text-uppercase" type="submit">Sign in</button>
 
+                    <a className="btn btn-primary btn-block text-uppercase" href="/register">register</a>
+
                   </form>
                 </div>
               </div>

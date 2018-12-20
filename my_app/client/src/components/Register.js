@@ -143,21 +143,35 @@ class Register extends Component {
         NumContribuinte: this.state.numContribuinte,
         Pais: this.state.pais,
         Moeda: this.state.moeda,
-        CDU_CampoVar2: this.state.password
+        CamposUtil: [
+          {
+            Conteudo: "ValorValoruser1",
+            Nome: "CDU_CampoVar1",
+            Valor: "user1",
+            Objecto: null,
+            Tipo: 1,
+            ChaveLog: "Nome",
+            EstadoBE: "",
+            TipoSimplificado: 1
+          },
+          {
+            Conteudo: "ValorValorpassword",
+            Nome: "CDU_CampoVar2",
+            Valor: this.state.password,
+            Objecto: null,
+            Tipo: 1,
+            ChaveLog: "Nome",
+            EstadoBE: "",
+            TipoSimplificado: 1
+          }
+        ]
       })
-    }).then(() => this.setState({ redirect: true }));/*.then(response => response.json())
-      .then((response) => {
-        console.log(response);
-      });*/
+    }).then(() => this.setState({ redirect: true }));
   }
 
   render() {
     if (this.state.redirect) {
       return (<Redirect to={'/login'} />)
-    }
-
-    if (sessionStorage.getItem('token')) {
-      //return (<Redirect to={'/homepage'} />)
     }
 
     return (
@@ -168,7 +182,7 @@ class Register extends Component {
             <div className="mx-auto">
               <div className="card card-signin my-5">
                 <div className="card-body">
-                  <h5 className="card-title text-center">Sign Up</h5>
+                  <h5 className="card-title text-center">Register</h5>
                   <form className="form-signup" onSubmit={this.handleSubmit}>
                     {
                       this.state.error &&
@@ -210,7 +224,9 @@ class Register extends Component {
                       <input type="password" id="inputPassword" className="form-control" placeholder="Password" value={this.state.password} required onChange={this.handlePassChange}></input>
                     </div>
 
-                    <button className="btn btn-primary btn-block text-uppercase" type="submit">Sign up</button>
+                    <button className="btn btn-primary btn-block text-uppercase" type="submit">Register</button>
+
+                    <a className="btn btn-primary btn-block text-uppercase" href="/login">Sign in</a>
 
                   </form>
                 </div>
