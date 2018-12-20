@@ -97,6 +97,7 @@ class Product extends Component {
     var baseURL = 'http://localhost:2018/WebApi/Base/Artigos/Edita/';
     var newURL = baseURL + this.state.productID;
     var obj;
+    var stock;
     var desc;
     console.log(newURL);
     fetch(newURL, {
@@ -109,10 +110,11 @@ class Product extends Component {
     }).then(response => response.json())
     .then(function(data){
       obj = JSON.parse(JSON.stringify(data));
-      //console.log('prod:'+obj);
+      stock= obj.StkActual;
       desc=obj.Observacoes;
-      console.log("description:"+desc);
+      //console.log("description:"+desc);
       obj=obj.Descricao;
+      console.log('prod:'+stock);
 
     })
       .then(product => this.setState({ product }))
@@ -120,6 +122,8 @@ class Product extends Component {
         this.getProductPrice(token);
         this.setState({ productName: obj })
         this.setState({ productDescription: desc })
+        this.setState({ stock: stock })
+
       });
 
 
@@ -165,7 +169,6 @@ class Product extends Component {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + token,
-
       },
     }).then(response => response.json())
     .then(function(data){
@@ -246,7 +249,10 @@ class Product extends Component {
                 <p className="product-description">
                 {this.state.productDescription}
                 </p>
-
+                <div className="product stock">
+                <h4>Em stock:</h4>
+                <h4>{this.state.stock} <small className="text-muted">kg</small></h4>
+              </div>
               <div className="product price">
                 <h4>Preço:</h4>
                 <h4>{this.state.productPrice} € <small className="text-muted">/kg</small></h4>
