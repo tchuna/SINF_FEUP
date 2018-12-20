@@ -14,6 +14,8 @@ class Product extends Component {
       productDescription: null,
       productName: null,
       productQuantity: 0,
+      alsoBoughtData: null,
+      alsoBought: null,
       redirect: false
     };
 
@@ -57,7 +59,10 @@ class Product extends Component {
       .then(() => {
         //this.validateUser(obj.access_token);
         this.productExists(obj.access_token);
-
+      })
+      .then(() => {
+        //this.validateUser(obj.access_token);
+        this.getAlsoBought(obj.access_token);
       });
   }
 
@@ -121,6 +126,36 @@ class Product extends Component {
       //Base/Artigos/DaValorAtributo/MCA/Descricao
   }
 
+  getAlsoBought(token){
+      let query = JSON.stringify("Select Distinct linha.Artigo from LinhasDoc AS linha Inner Join LinhasDoc AS doc ON linha.IdCabecDoc=doc.IdCabecDoc WHERE doc.Artigo = " + "\'" + this.state.productID + "\'" + " AND linha.Artigo != " + "\'" + this.state.productID + "\'");
+      console.log(query);
+      fetch('http://localhost:2018/WebApi/Administrador/Consulta', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'cache-control': 'no-cache',
+          'Authorization': 'Bearer '+token
+        },
+        body: query,
+      }).then(response => response.json())
+      .then(alsoBoughtData => this.setState({ alsoBoughtData }))
+      .then(() => {
+        this.buildAlsoBought();
+      });
+  }
+
+  buildAlsoBought(){
+    var alsoBought = [];
+    console.log("hello");
+    if (this.state.alsoBoughtData) {
+      let obj =JSON.parse(JSON.stringify(this.state.alsoBoughtData));
+      let products = obj.DataSet.Table;
+      alsoBought = products;
+    }
+    this.setState({alsoBought: alsoBought});
+    console.log(alsoBought);
+  }
+
   getProductPrice(token){
     var base='http://localhost:2018/WebApi/Base/ArtigosPrecos/Edita/';
     var priceURL = base+this.state.productID+'/EUR/UN';
@@ -182,6 +217,21 @@ class Product extends Component {
     if(this.state.redirect){
       return (<Redirect to={'/login'}/>)
     }
+    var alsoBought;
+
+    if(this.state.alsoBought != null){
+      console.log(this.state.alsoBought);
+       alsoBought = this.state.alsoBought.map(product =>{
+        return (
+          <div key={product.Artigo} className="col-lg-2">
+            <a href={"../products/" + product.Artigo}>
+              <img className="img-fluid" width="200" height="160" src={"../img/" + product.Artigo + ".png"} alt="Product" />
+            </a>
+          </div>
+        )
+      })
+    }
+
     return (
       <div>
         <Navigation />
@@ -216,12 +266,20 @@ class Product extends Component {
                       </div>
                     </div>
                   </div>
-
                 </form>
               </div>
             </div>
           </div>
+          <p></p>
+          <div className="mb-3">
+            <h5>Clientes que compraram isto também compraram:</h5>
+            <hr/>
+            <div className="row">
+              {alsoBought}
+            </div>
+          </div>
         </div>
+
       </div>
     );
   }
