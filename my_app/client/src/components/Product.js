@@ -30,7 +30,7 @@ class Product extends Component {
 
   componentWillMount() {
     if(sessionStorage.getItem('token')){
-      console.log("ja existe token");
+      //console.log("ja existe token");
     }
     else{
       this.setState({redirect: true});
@@ -69,7 +69,7 @@ class Product extends Component {
   productExists(token){
     var baseExists ='http://localhost:2018/WebApi/Base/Artigos/Existe/'
     var existsURL = baseExists+this.state.productID;
-    console.log(existsURL);
+    //console.log(existsURL);
     var obj;
     fetch(existsURL, {
       method: 'GET',
@@ -79,21 +79,20 @@ class Product extends Component {
     }).then(response => response.json())
     .then(function(data){
       obj = JSON.parse(JSON.stringify(data));
-      console.log(obj);
+      //console.log(obj);
     })
     .then(() => {
       if(obj===true){
         this.getProduct(token);
       }
       else{
-        console.log("artigo nao existe");
+        //console.log("artigo nao existe");
       }
     });
 
   }
 
   getProduct(token) {
-
     var baseURL = 'http://localhost:2018/WebApi/Base/Artigos/Edita/';
     var newURL = baseURL + this.state.productID;
     var obj;
@@ -114,7 +113,7 @@ class Product extends Component {
       desc=obj.Observacoes;
       //console.log("description:"+desc);
       obj=obj.Descricao;
-      console.log('prod:'+stock);
+      //console.log('prod:'+stock);
 
     })
       .then(product => this.setState({ product }))
@@ -132,7 +131,7 @@ class Product extends Component {
 
   getAlsoBought(token){
       let query = JSON.stringify("Select Distinct linha.Artigo from LinhasDoc AS linha Inner Join LinhasDoc AS doc ON linha.IdCabecDoc=doc.IdCabecDoc WHERE doc.Artigo = " + "\'" + this.state.productID + "\'" + " AND linha.Artigo != " + "\'" + this.state.productID + "\'");
-      console.log(query);
+      //console.log(query);
       fetch('http://localhost:2018/WebApi/Administrador/Consulta', {
         method: 'POST',
         headers: {
@@ -150,7 +149,6 @@ class Product extends Component {
 
   buildAlsoBought(){
     var alsoBought = [];
-    console.log("hello");
     if (this.state.alsoBoughtData) {
       let obj =JSON.parse(JSON.stringify(this.state.alsoBoughtData));
       let products = obj.DataSet.Table;
@@ -164,7 +162,7 @@ class Product extends Component {
     var base='http://localhost:2018/WebApi/Base/ArtigosPrecos/Edita/';
     var priceURL = base+this.state.productID+'/EUR/UN';
     var price;
-    console.log(priceURL);
+    //console.log(priceURL);
     fetch(priceURL, {
       method: 'GET',
       headers: {

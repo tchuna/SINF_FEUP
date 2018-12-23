@@ -16,16 +16,44 @@ class UserProfile extends Component {
       phone: null,
       orders: null,
       clicked: false,
-      inputName: '',
-      inputAddress:'',
+      inputUsername: '',
+      inputPassword: '',
 
     };
     this.handleClick = this.handleClick.bind(this);
+    this.handlePassChange = this.handlePassChange.bind(this);
+    this.handleUserChange = this.handleUserChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+
+  }
+  handleSubmit(evt) {
+    evt.preventDefault();
+
+
+    //this.validateUser();
+    console.log(this.state.inputPassword);
+    //this.getToken();
+  }
+
+  handleUserChange(evt) {
+    this.setState({
+      inputUsername: evt.target.value,
+    });
+    console.log(this.state.inputUsername);
+
+  };
+
+  handlePassChange(evt) {
+    this.setState({
+      inputPassword: evt.target.value,
+    });
+    console.log(this.state.inputPassword);
+
   }
 
   componentWillMount() {
     if (sessionStorage.getItem('token')) {
-      console.log("existe token");
+      //console.log("existe token");
     }
     else {
       this.setState({ redirect: true });
@@ -57,6 +85,31 @@ class UserProfile extends Component {
       .then(() => {
         this.userExists(obj.access_token);
 
+      });
+  }
+  getUpdateToken() {
+    var obj;
+    fetch('http://localhost:2018/WebApi/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: qs.stringify({
+        username: 'FEUP',
+        password: 'qualquer1',
+        company: 'FRUITSHOP',
+        instance: 'Default',
+        grant_type: 'password',
+        Line: 'professional'
+      })
+    }).then(response => response.json())
+      .then(function (data) {
+        obj = JSON.parse(JSON.stringify(data));
+      })
+      .then(() => {
+        //this.userExists(obj.access_token);
+        this.removeUser(obj.access_token);
+        this.updateUser(obj.access_token);
       });
   }
 
@@ -126,7 +179,7 @@ class UserProfile extends Component {
   getClientOrders(token) {
 
     let entity = sessionStorage.getItem('userID');
-    entity = "\'" + entity + "\'";
+    entity = "\'" + entity + "\' Order By CD.Data";
     const query = "SELECT CD.Data, CD.TipoDoc, CD.Documento, CD.NumDoc, CD.TotalDocumento, CD.Nome, CD.Entidade,CDS.Estado FROM CabecDoc CD INNER JOIN CabecDocStatus CDS ON CDS.IdCabecDoc = CD.Id WHERE CD.TipoDoc='ECL' and CD.Entidade =";
     entity = query + entity;
     var url = JSON.stringify(entity);
@@ -147,7 +200,7 @@ class UserProfile extends Component {
       .then(function (data) {
         obj = JSON.parse(JSON.stringify(data));
         obj = obj.DataSet.Table;
-        console.log(obj);
+        //console.log(obj);
 
       })
       .then(() => {
@@ -157,26 +210,28 @@ class UserProfile extends Component {
   }
   // <th class="scope">{s.Data}</th>
   orderItems = () => {
+
     if (this.state.orders != null) {
       return this.state.orders.map(s => {
+        let data = s.Data.slice(0,10);
         return <tr>
           <th scope="row">{s.NumDoc}</th>
-          <td>{s.Data}</td>
-          <td>{s.TotalDocumento}</td>
+          <td>{data}</td>
+          <td>{s.TotalDocumento} €</td>
           <td>{s.Estado}</td>
         </tr>
       })
     }
   }
 
-   handleClick(e) {
+  handleClick(e) {
     e.preventDefault();
     console.log('The btn was clicked.');
-    this.setState({clicked : true});
+    this.setState({ clicked: true });
   }
   open = () => {
-    if(this.state.clicked)
-      return <EditForm/>
+    if (this.state.clicked)
+      return <EditForm />
 
   }
   handleClick() {
@@ -185,6 +240,60 @@ class UserProfile extends Component {
     }));
   }
 
+
+  removeUser(token) {
+    let baseURL = 'http://localhost:2018/WebApi/Base/Clientes/Remove/'+this.state.userID;
+    fetch(baseURL, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + token
+      },
+    });
+
+  }
+
+
+  updateUser(token) {
+    var baseURL = 'http://localhost:2018/WebApi/Base/Clientes/Actualiza/';
+
+    fetch(baseURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'cache-control': 'no-cache',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({
+        Cliente: this.state.inputUsername,
+        Nome: this.state.name,
+        NumContribuinte: this.state.nif,
+        Pais: 'PT',
+        Moeda: 'EUR',
+        CamposUtil: [
+          {
+            Conteudo: "ValorValoruser1",
+            Nome: "CDU_CampoVar1",
+            Valor: "user1",
+            Objecto: null,
+            Tipo: 1,
+            ChaveLog: "Nome",
+            EstadoBE: "",
+            TipoSimplificado: 1
+          },
+          {
+            Conteudo: "ValorValorpassword",
+            Nome: "CDU_CampoVar2",
+            Valor: this.state.inputPassword,
+            Objecto: null,
+            Tipo: 1,
+            ChaveLog: "Nome",
+            EstadoBE: "",
+            TipoSimplificado: 1
+          }
+        ]
+      })
+    }).then(() => this.setState({ redirect: true }));
+  }
 
 
 
@@ -225,31 +334,31 @@ class UserProfile extends Component {
               </p>
             </div>
           </div>
-          <br/>
-          <br/>
+          <br />
+          <br />
 
           <div className="row">
             <div className="col-lg-12">
               <h3>Shopping History</h3>
             </div>
-            <br/>
-          <br/>
+            <br />
+            <br />
             <table className="table table-hover">
               <thead>
                 <tr>
                   <th scope="col">NumDocumento</th>
                   <th scope="col">Data</th>
-                  <th scope="col">TotalDocumento</th>
+                  <th scope="col">Total Price</th>
                   <th scope="col">Estado</th>
                 </tr>
               </thead>
               <tbody>
-                  {this.orderItems()}
+                {this.orderItems()}
               </tbody>
             </table>
           </div>
-          <br/>
-          <br/>
+          <br />
+          <br />
         </div>
       </div>
     );
@@ -264,33 +373,21 @@ class EditForm extends Component {
     };
   }
   render() {
-    return(
+    return (
       <div>
-      <form className="form-signin" onSubmit={this.handleSubmit}>
-                    {
+        <form className="form-signin" onSubmit={this.handleSubmit}>
+          <div className="form-label-group mb-3">
+            <label>Novo username: </label>
+            <input type="text" data-test="name" value={this.state.inputUsername} onChange={this.handleUserChange} />
+          </div>
+          <div className="form-label-group mb-3">
+            <label>Nova password: </label>
+            <input type="password" data-test="passwrod" value={this.state.inputPassword} onChange={this.handlePassChange} />
+          </div>
 
-                      this.state.error &&
-                      <div className="alert alert-warning alert-dismissible fade show" role="alert">
-                        <button type="button" className="close" onClick={this.dismissError} data-dismiss="alert" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                        <strong> {this.state.error}</strong>
-                      </div>
+          <button className="btn btn-primary btn-block text-uppercase" type="submit">Sign in</button>
 
-
-                    }
-                    <div className="form-label-group mb-3">
-                      <label>Novo nome: </label>
-                      <input type="text" data-test="name" value={this.state.inputName} onChange={this.handleNameChange} />
-                    </div>
-                    <div className="form-label-group mb-3">
-                      <label>Novo telefone: </label>
-                      <input type="text" data-test="phone" value={this.state.inputPhone} onChange={this.handlePhoneChange} />
-                    </div>
-
-                    <button className="btn btn-primary btn-block text-uppercase" type="submit">Sign in</button>
-
-                  </form>  
+        </form>
       </div>
 
     );

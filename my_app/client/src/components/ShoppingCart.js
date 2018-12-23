@@ -81,7 +81,6 @@ class Cart extends Component {
 
   sendECL(token){
       var url ='http://localhost:2018/WebApi/Vendas/Docs/CreateDocument/';
-      var obj;
 
       fetch(url, {
         method: 'POST',
@@ -99,10 +98,7 @@ class Cart extends Component {
           DataDoc: '12/11/2018',
           DataVenc: '12/12/2018'
         })
-      }).then(response => response.json())
-      .then(function(data){
-        obj = JSON.parse(JSON.stringify(data));
-      });
+      }).then(response => response.json());
     }
 
   removeRow = (event,product) => {
@@ -129,7 +125,7 @@ class Cart extends Component {
     var totalPrice = 0;
     if(this.state.cart != null){
        list = this.state.cart.map( product =>{
-        let subTotal = Math.round(product.price * product.quantity * 100) / 100 ;
+        let subTotal = Math.round((product.price * product.quantity + 0.23 *(product.price * product.quantity)) * 100) / 100 ;
         totalPrice += subTotal;
 
         return (
@@ -138,6 +134,7 @@ class Cart extends Component {
             <td> <p> {product.name}</p> </td>
             <td data-th="Price"  className="text-center">{product.price} €</td>
             <td data-th="Quantity" className="text-center">{product.quantity} Kg</td>
+            <td data-th="Iva" className="text-center"> 23% </td>
             <td data-th="Subtotal" className="text-center">{subTotal} €</td>
             <td className="actions" data-th="">
               <button className="btn btn-danger btn-sm" onClick={(event) => this.removeRow(event, product)}><i className="fa fa-times-circle"></i></button>
@@ -157,6 +154,7 @@ class Cart extends Component {
               <th></th>
               <th className="text-center">Price</th>
               <th className="text-center">Quantity</th>
+              <th className="text-center">Iva</th>
               <th className="text-center">Subtotal</th>
               <th> </th>
             </tr>

@@ -185,7 +185,7 @@ class Login extends Component {
                       <input type="password" data-test="password" className="form-control" value={this.state.password} onChange={this.handlePassChange} />
                     </div>
 
-                    <button className="btn btn-primary btn-block text-uppercase" type="submit">Sign in</button>
+                    <button className="btn btn-primary btn-block text-uppercase" type="submit">Submit</button>
 
                     <a className="btn btn-primary btn-block text-uppercase" href="/register">register</a>
 

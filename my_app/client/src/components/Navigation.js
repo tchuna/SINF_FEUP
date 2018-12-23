@@ -15,7 +15,6 @@ export class Navigation extends React.Component {
 
   componentWillMount() {
     if(sessionStorage.getItem('token')){
-      console.log("ja existe token");
       this.setState({logedIn: true});
     }
     else{

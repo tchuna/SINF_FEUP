@@ -85,6 +85,7 @@ getProductsSuggestions(token){
 
     if (this.state.data) {
       let obj =JSON.parse(JSON.stringify(this.state.data));
+      if(obj.DataSet.Table){
       let products = obj.DataSet.Table;
       products.sort(function(a, b) {
         a = new Date(a.DataUltimaActualizacao);
@@ -92,7 +93,7 @@ getProductsSuggestions(token){
       return a>b ? -1 : a<b ? 1 : 0;
     });
     newestProducts = products.slice(0,6);
-
+      }
     }
     this.setState({newestProducts: newestProducts});
   }
@@ -113,7 +114,7 @@ getProductsSuggestions(token){
     var suggestedProducts;
 
     if(this.state.suggestedProducts != null){
-      console.log(this.state.suggestedProducts);
+      //console.log(this.state.suggestedProducts);
        suggestedProducts = this.state.suggestedProducts.map(product =>{
         return (
           <div key={product.Artigo} className="col-lg-2">
@@ -191,7 +192,7 @@ class Homepage extends Component {
 
   componentWillMount() {
     if(sessionStorage.getItem('token')){
-      console.log("ja existe token");
+      //console.log("ja existe token");
     }
     else{
       this.setState({redirect: true});
